@@ -1,6 +1,8 @@
 from trame.ui.vuetify import SinglePageLayout
-from trame.widgets import vuetify, grid, client, trame
+from trame.widgets import vuetify, grid, client, html
 from . import power_over_time, top_quadrant, empty
+
+DEFAULT_NB_ROWS = 4
 
 
 def get_next_y_from_layout(layout):
@@ -25,47 +27,31 @@ def initialize(server):
     # Reserve the various views
     available_view_ids = [f"{v+1}" for v in range(10)]
     for view_id in available_view_ids:
-        state[f"grid_view_{view_id}"] = "empty"
+        state[f"grid_view_{view_id}"] = empty.OPTION
 
     @ctrl.set("grid_add_view")
     def add_view():
         next_view_id = available_view_ids.pop()
         next_y = get_next_y_from_layout(state.grid_layout)
-        state.grid_layout.append(dict(x=0, w=12, h=1, y=next_y, i=next_view_id))
+        state.grid_layout.append(
+            dict(x=0, w=12, h=DEFAULT_NB_ROWS, y=next_y, i=next_view_id)
+        )
         state.dirty("grid_layout")
 
     @ctrl.set("grid_remove_view")
     def remove_view(view_id):
-        print("remove_view", view_id)
         available_view_ids.append(view_id)
-        state.grid_layout = filter(
-            lambda item: item.get("i") != view_id, state.grid_layout
+        state.grid_layout = list(
+            filter(lambda item: item.get("i") != view_id, state.grid_layout)
         )
-
-    state.new_grid_layout = []
-
-    @state.change("new_grid_layout")
-    def on_layout_change(new_grid_layout, **kwargs):
-        print("in", new_grid_layout)
-        result = []
-        for item in new_grid_layout:
-            new_item = dict(**item)
-            new_item.pop("moved")
-            result.append(new_item)
-
-        print(result)
-        state.grid_layout = result
-
-    # @state.change("content_size")
-    # def on_size_change(content_size, **kwargs):
-    #     print(content_size)
 
     # Setup main layout
     with SinglePageLayout(server) as layout:
         # Toolbar
         layout.title.set_text("VERACore")
         with layout.toolbar as toolbar:
-            toolbar.dense = True
+            layout.icon
+            toolbar.height = 36
             vuetify.VSpacer()
             with vuetify.VBtn(icon=True, click=ctrl.grid_add_view):
                 vuetify.VIcon("mdi-plus")
@@ -73,42 +59,61 @@ def initialize(server):
         # Main content
         with layout.content:
             with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
-                with trame.SizeObserver("content_size"):
-                    with grid.GridLayout(
-                        layout=("grid_layout", []),
-                        layout_updated="new_grid_layout = $event",
-                        row_height=100,
-                        max_rows=3,
-                        # max_rows=("Math.floor(content_size?.size?.height / 200) || 10",),
-                        classes="fill-height",
-                        style="width: 100%; position: relative;",
+                with grid.GridLayout(
+                    layout=("grid_layout", []),
+                    row_height=30,
+                    vertical_compact=True,
+                    style="width: 100%; height: 100%;",
+                ):
+                    with grid.GridItem(
+                        v_for="item in grid_layout",
+                        key="item.i",
+                        v_bind="item",
+                        style="touch-action: none;",
                     ):
-                        with grid.GridItem(
-                            v_for="item in grid_layout",
-                            key="item.i",
-                            v_bind="item",
-                        ):
-                            with vuetify.VCard(style="height: 100%;"):
-                                with vuetify.VCardTitle(classes="py-0"):
-                                    vuetify.VSelect(
-                                        value=("get(`grid_view_${item.i}`)",),
-                                        change="set(`grid_view_${item.i}`, $event)",
-                                        items=("grid_options", []),
-                                        dense=True,
-                                        hide_details=True,
-                                    )
-                                    vuetify.VSpacer()
-                                    with vuetify.VBtn(
-                                        icon=True,
-                                        click=(ctrl.grid_remove_view, "[item.i]"),
+                        with vuetify.VCard(style="height: 100%;"):
+                            with vuetify.VCardTitle(classes="py-1 px-1"):
+                                with vuetify.VMenu(offset_y=True):
+                                    with vuetify.Template(
+                                        v_slot_activator="{ on, attrs }"
                                     ):
-                                        vuetify.VIcon("mdi-delete-forever-outline")
-                                vuetify.VDivider()
-                                with vuetify.VCardText():
-                                    # Add template for value of get(`grid_view_${item.i}`)
-                                    client.ServerTemplate(
-                                        name=("get(`grid_view_${item.i}`)",)
+                                        with vuetify.VBtn(
+                                            icon=True,
+                                            small=True,
+                                            v_bind="attrs",
+                                            v_on="on",
+                                        ):
+                                            vuetify.VIcon(
+                                                v_text="get(`grid_view_${item.i}`).icon"
+                                            )
+                                        html.Div(
+                                            "{{ get(`grid_view_${item.i}`).label }}",
+                                            classes="ml-1 text-subtitle-2",
+                                        )
+                                    with vuetify.VList(dense=True):
+                                        with vuetify.VListItem(
+                                            v_for="(option, index) in grid_options",
+                                            key="index",
+                                            click="set(`grid_view_${item.i}`, option)",
+                                        ):
+                                            with vuetify.VListItemIcon():
+                                                vuetify.VIcon(v_text="option.icon")
+                                            vuetify.VListItemTitle("{{ option.label }}")
+                                vuetify.VSpacer()
+                                with vuetify.VBtn(
+                                    icon=True,
+                                    x_small=True,
+                                    click=(ctrl.grid_remove_view, "[item.i]"),
+                                ):
+                                    vuetify.VIcon(
+                                        "mdi-delete-forever-outline", small=True
                                     )
+                            vuetify.VDivider()
+                            with vuetify.VCardText():
+                                # Add template for value of get(`grid_view_${item.i}`)
+                                client.ServerTemplate(
+                                    name=("get(`grid_view_${item.i}`).name",)
+                                )
 
         # Footer
         # layout.footer.hide()
