@@ -20,7 +20,9 @@ def main(server=None, **kwargs):
         server = get_server(server)
 
     server.cli.add_argument(
-        "--data", help="Data file to load", dest="data_file",
+        "--data",
+        help="Data file to load",
+        dest="data_file",
         required=True,
     )
     args, _ = server.cli.parse_known_args()

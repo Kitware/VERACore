@@ -131,13 +131,14 @@ def initialize(server, vera_out_file):
                                     )
                             vuetify.VDivider()
 
-                            style = "; ".join([
-                                "position: relative",
-                                "height: calc(100% - 37px)",
-                                "overflow: auto",
-                            ])
-                            with vuetify.VCardText(style=style,
-                                                   classes="drag_ignore"):
+                            style = "; ".join(
+                                [
+                                    "position: relative",
+                                    "height: calc(100% - 37px)",
+                                    "overflow: auto",
+                                ]
+                            )
+                            with vuetify.VCardText(style=style, classes="drag_ignore"):
                                 # Add template for value of get(`grid_view_${item.i}`)
                                 client.ServerTemplate(
                                     name=("get(`grid_view_${item.i}`).name",)

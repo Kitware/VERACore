@@ -22,7 +22,5 @@ class MyBusinessLogic:
 
 
 def initialize(server):
-    state, ctrl = server.state, server.controller
-
     engine = MyBusinessLogic(server)
     return engine

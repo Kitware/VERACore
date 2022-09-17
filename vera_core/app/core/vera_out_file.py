@@ -9,7 +9,7 @@ H5_ARRAY_TYPE = Union[h5py.Dataset, np.ndarray]
 class VeraOutFile:
     def __init__(self, filename):
         # Keep this open for better performance
-        self.f = h5py.File(filename, 'r')
+        self.f = h5py.File(filename, "r")
         self.core = VeraOutCore(self.f)
         self.core._cache_all()
 
@@ -23,8 +23,8 @@ class VeraOutFile:
         self.f.close()
 
     def _create_states(self):
-        state_keys = [key for key in self.f if key.startswith('STATE_')]
-        indices = [int(key.split('_')[1]) for key in state_keys]
+        state_keys = [key for key in self.f if key.startswith("STATE_")]
+        indices = [int(key.split("_")[1]) for key in state_keys]
         self.states = [VeraOutState(self.f, idx) for idx in indices]
 
     @property
@@ -37,7 +37,7 @@ class VeraOutFile:
 
     @active_state_index.setter
     def active_state_index(self, index):
-        if hasattr(self, '_active_state_index'):
+        if hasattr(self, "_active_state_index"):
             if self._active_state_index == index:
                 return
             else:
@@ -57,7 +57,7 @@ class LazyHDF5Loader:
         self._uncache_all()
 
     def _load_dataset(self, name):
-        return self._f[f'{self._path}/{name}']
+        return self._f[f"{self._path}/{name}"]
 
     def _cache(self, name):
         # Set the attribute to be the loaded numpy array
@@ -89,7 +89,7 @@ class VeraOutCore(LazyHDF5Loader):
     pin_volumes: H5_ARRAY_TYPE = None
 
     def __init__(self, f):
-        super().__init__(f, '/CORE', list(self.__annotations__))
+        super().__init__(f, "/CORE", list(self.__annotations__))
 
 
 class VeraOutState(LazyHDF5Loader):
@@ -104,5 +104,5 @@ class VeraOutState(LazyHDF5Loader):
     pin_powers: H5_ARRAY_TYPE = None
 
     def __init__(self, f, idx):
-        super().__init__(f, f'/STATE_{idx:04}', list(self.__annotations__))
+        super().__init__(f, f"/STATE_{idx:04}", list(self.__annotations__))
         self._index = idx
