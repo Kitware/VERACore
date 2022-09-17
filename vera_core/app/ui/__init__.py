@@ -2,7 +2,7 @@ from trame.ui.vuetify import SinglePageLayout
 from trame.widgets import vuetify, grid, client, html
 from . import power_over_time, top_quadrant, empty
 
-DEFAULT_NB_ROWS = 4
+DEFAULT_NB_ROWS = 8
 
 
 def get_next_y_from_layout(layout):
@@ -14,14 +14,14 @@ def get_next_y_from_layout(layout):
     return next_y
 
 
-def initialize(server):
+def initialize(server, vera_out_file):
     state, ctrl = server.state, server.controller
     state.trame__title = "VERACore"
 
     # Initialize all visualizations
     state.setdefault("grid_options", [])
-    power_over_time.initialize(server)
-    top_quadrant.initialize(server)
+    power_over_time.initialize(server, vera_out_file)
+    top_quadrant.initialize(server, vera_out_file)
     empty.initialize(server)
 
     # Reserve the various views
@@ -53,6 +53,26 @@ def initialize(server):
             layout.icon
             toolbar.height = 36
             vuetify.VSpacer()
+
+            index_names = [
+                "selected_assembly",
+                "selected_layer",
+                "selected_i",
+                "selected_j",
+            ]
+
+            for index_name in index_names:
+                vuetify.VTextField(
+                    v_model=(index_name, 0),
+                    label=index_name,
+                    hide_details=True,
+                    dense=True,
+                    type="number",
+                    # FIXME: Put in min and max. max=
+                    style="max-width: 100px;",
+                    classes="mx-1",
+                )
+
             with vuetify.VBtn(icon=True, click=ctrl.grid_add_view):
                 vuetify.VIcon("mdi-plus")
 
@@ -70,6 +90,7 @@ def initialize(server):
                         key="item.i",
                         v_bind="item",
                         style="touch-action: none;",
+                        drag_ignore_from=".drag_ignore",
                     ):
                         with vuetify.VCard(style="height: 100%;"):
                             with vuetify.VCardTitle(classes="py-1 px-1"):
@@ -109,7 +130,14 @@ def initialize(server):
                                         "mdi-delete-forever-outline", small=True
                                     )
                             vuetify.VDivider()
-                            with vuetify.VCardText():
+
+                            style = "; ".join([
+                                "position: relative",
+                                "height: calc(100% - 37px)",
+                                "overflow: auto",
+                            ])
+                            with vuetify.VCardText(style=style,
+                                                   classes="drag_ignore"):
                                 # Add template for value of get(`grid_view_${item.i}`)
                                 client.ServerTemplate(
                                     name=("get(`grid_view_${item.i}`).name",)

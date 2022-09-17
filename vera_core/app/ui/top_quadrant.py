@@ -7,7 +7,7 @@ OPTION = {
 }
 
 
-def initialize(server):
+def initialize(server, vera_out_file):
     state = server.state
     state.grid_options.append(OPTION)
 
