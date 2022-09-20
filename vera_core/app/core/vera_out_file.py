@@ -83,6 +83,7 @@ class LazyHDF5Loader:
 
 
 class VeraOutCore(LazyHDF5Loader):
+    # These are the attributes that will be read from the HDF5 file
     axial_mesh: H5_ARRAY_TYPE = None
     core_map: H5_ARRAY_TYPE = None
     core_sym: H5_ARRAY_TYPE = None
@@ -90,9 +91,47 @@ class VeraOutCore(LazyHDF5Loader):
 
     def __init__(self, f):
         super().__init__(f, "/CORE", list(self.__annotations__))
+        self.compute_reduced_core_map()
+        self.compute_axial_mesh_pixels()
+
+    def compute_reduced_core_map(self):
+        """Compute the reduced core map based upon the core_sym"""
+        sym = self.core_sym[0]
+        if sym == 1:
+            self.reduced_core_map = self.core_map[:].copy()
+        elif sym == 4:
+            w, h = self.core_map[:].shape
+            start_w = w // 2
+            start_h = h // 2
+            self.reduced_core_map = self.core_map[start_w:, start_h:]
+        else:
+            raise Exception(f"Unhandled symmetry: {sym}")
+
+    def compute_axial_mesh_pixels(self):
+        """Compute the number of pixels that we will be displaying in
+        the axial direction for each length in the axial mesh.
+        """
+        diff_array = np.diff(self.axial_mesh[:])
+
+        # The min diff will be three pixels high. The rest will be computed based
+        # upon the min diff.
+        MIN_DIFF_PIXELS_HEIGHT = 3
+        pixel_height = np.min(diff_array) / MIN_DIFF_PIXELS_HEIGHT
+        pixel_height_array = diff_array / pixel_height
+        self.axial_mesh_pixels = np.round(pixel_height_array).astype(np.int64)
+
+    def row_assembly_indices(self, assembly_idx):
+        """Get indices of all assemblies in the same row as this assembly"""
+        # The core map and reduced core map use 1-based indexing
+        row = np.where(self.reduced_core_map == assembly_idx + 1)[0][0]
+        ids = self.reduced_core_map[row]
+        # Remove any zeros
+        ids = ids[ids > 0]
+        return ids - 1
 
 
 class VeraOutState(LazyHDF5Loader):
+    # These are the attributes that will be read from the HDF5 file
     crit_boron: H5_ARRAY_TYPE = None
     detector_response: H5_ARRAY_TYPE = None
     exposure: H5_ARRAY_TYPE = None

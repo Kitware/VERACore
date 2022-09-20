@@ -1,6 +1,6 @@
-from trame.ui.vuetify import SinglePageLayout
+from trame.ui.vuetify import SinglePageWithDrawerLayout
 from trame.widgets import vuetify, grid, client, html
-from . import power_over_time, top_quadrant, empty
+from . import axial_view, empty, time_plot
 
 DEFAULT_NB_ROWS = 8
 
@@ -20,14 +20,29 @@ def initialize(server, vera_out_file):
 
     # Initialize all visualizations
     state.setdefault("grid_options", [])
-    power_over_time.initialize(server, vera_out_file)
-    top_quadrant.initialize(server, vera_out_file)
+    state.setdefault("grid_layout", [])
+    time_plot.initialize(server, vera_out_file)
+    axial_view.initialize(server, vera_out_file)
     empty.initialize(server)
 
     # Reserve the various views
     available_view_ids = [f"{v+1}" for v in range(10)]
     for view_id in available_view_ids:
         state[f"grid_view_{view_id}"] = empty.OPTION
+
+    # Axial view
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=0, y=0, w=6, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = axial_view.OPTION
+
+    # Time plot
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=6, y=0, w=6, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = time_plot.OPTION
 
     @ctrl.set("grid_add_view")
     def add_view():
@@ -46,7 +61,7 @@ def initialize(server, vera_out_file):
         )
 
     # Setup main layout
-    with SinglePageLayout(server) as layout:
+    with SinglePageWithDrawerLayout(server) as layout:
         # Toolbar
         layout.title.set_text("VERACore")
         with layout.toolbar as toolbar:
@@ -54,27 +69,43 @@ def initialize(server, vera_out_file):
             toolbar.height = 36
             vuetify.VSpacer()
 
-            index_names = [
-                "selected_assembly",
-                "selected_layer",
-                "selected_i",
-                "selected_j",
-            ]
-
-            for index_name in index_names:
-                vuetify.VTextField(
-                    v_model=(index_name, 0),
-                    label=index_name,
-                    hide_details=True,
-                    dense=True,
-                    type="number",
-                    # FIXME: Put in min and max. max=
-                    style="max-width: 100px;",
-                    classes="mx-1",
-                )
+            vuetify.VSelect(
+                v_model=("selected_array", "pin_powers"),
+                items=("available_arrays", [
+                    dict(text="Pin Powers", value="pin_powers"),
+                    dict(text="Pin Clad Temps", value="pin_cladtemps"),
+                    dict(text="Pin Fuel Temps", value="pin_fueltemps"),
+                    dict(text="Pin Moderator Density", value="pin_moddens"),
+                    dict(text="Pin Moderator Temps", value="pin_modtemps"),
+                ]),
+                hide_details=True,
+                dense=True,
+                style="max-width: 220px",
+            )
 
             with vuetify.VBtn(icon=True, click=ctrl.grid_add_view):
                 vuetify.VIcon("mdi-plus")
+
+        with layout.drawer:
+            with vuetify.VCard(classes="pt-6"):
+                with vuetify.VCardText():
+                    data_shape = vera_out_file.core.pin_volumes.shape
+                    # The values are the (default, maxes)
+                    index_names = {
+                        "selected_assembly": (36, data_shape[3]),
+                        "selected_layer": (24, data_shape[2]),
+                        "selected_i": (7, data_shape[0]),
+                        "selected_j": (7, data_shape[1]),
+                    }
+
+                    for index_name, (default, maximum) in index_names.items():
+                        vuetify.VSlider(
+                            v_model=(index_name, default),
+                            label=index_name,
+                            min=0,
+                            max=maximum,
+                            thumb_label="always",
+                        )
 
         # Main content
         with layout.content:

@@ -1,13 +1,15 @@
+from functools import partial
+
 from trame.app import get_server, dev
 
 from . import engine, ui
 from .core.vera_out_file import VeraOutFile
 
 
-def _reload():
+def _reload(vera_out_file):
     server = get_server()
     dev.reload(ui)
-    ui.initialize(server)
+    ui.initialize(server, vera_out_file)
 
 
 def main(server=None, **kwargs):
@@ -30,8 +32,10 @@ def main(server=None, **kwargs):
 
     vera_out_file = VeraOutFile(data_file)
 
+    f = partial(_reload, vera_out_file=vera_out_file)
+
     # Make UI auto reload
-    server.controller.on_server_reload.add(_reload)
+    server.controller.on_server_reload.add(f)
 
     # Init application
     engine.initialize(server)
