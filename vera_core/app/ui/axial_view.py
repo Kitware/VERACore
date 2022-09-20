@@ -39,6 +39,7 @@ def initialize(server, vera_out_file):
     def create_image(img):
         fig, ax = plt.subplots(**figure_size())
         axes_image = ax.imshow(img)
+        fig.colorbar(axes_image)
         return fig
 
     # A cache of axial images.
