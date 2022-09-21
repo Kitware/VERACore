@@ -21,15 +21,13 @@ def initialize(server, vera_out_file):
         state.grid_options.append(OPTION)
 
     def figure_size():
-        if state.figure_size is None:
+        if state.axial_view_size is None:
             return {}
 
-        dpi = state.figure_size.get("dpi")
-        rect = state.figure_size.get("size")
-        w_inch = rect.get("width") / dpi
+        dpi = 96
+        rect = state.axial_view_size.get("size")
+        w_inch = rect.get("width") / dpi * 0.8  # Reduce width to better use space
         h_inch = rect.get("height") / dpi
-
-        # FIXME: the height isn't working. It is always 0.
 
         return {
             "figsize": (w_inch, h_inch),
@@ -45,15 +43,20 @@ def initialize(server, vera_out_file):
     # A cache of axial images.
     cached_axial_images = {}
 
-    @state.change("figure_size", "selected_array", "selected_assembly",
-                  "selected_j")
-    def update_axial_view(selected_array, selected_assembly, selected_j,
-                          **kwargs):
+    @state.change(
+        "figure_size",
+        "selected_array",
+        "selected_assembly",
+        "selected_j",
+        "axial_view_size",
+    )
+    def update_axial_view(selected_array, selected_assembly, selected_j, **kwargs):
         selected_assembly = int(selected_assembly)
         selected_j = int(selected_j)
 
         row_assembly_indices = vera_out_file.core.row_assembly_indices(
-            selected_assembly)
+            selected_assembly
+        )
 
         cache_key = (tuple(row_assembly_indices), selected_array)
         if cache_key in cached_axial_images:
@@ -87,7 +90,7 @@ def initialize(server, vera_out_file):
         ctrl.update_figure(create_image(image_data))
 
     with DivLayout(server, template_name="axial_view") as layout:
-        # FIXME: why can't we use trame.SizeObserver() here?
-        # with trame.SizeObserver("figure_size"):
-        html_figure = matplotlib.Figure(style="position: absolute")
-        ctrl.update_figure = html_figure.update
+        layout.root.style = "height: 100%;"
+        with trame.SizeObserver("axial_view_size"):
+            html_figure = matplotlib.Figure()
+            ctrl.update_figure = html_figure.update
