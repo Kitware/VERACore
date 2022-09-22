@@ -28,3 +28,22 @@ class TopQuadrant(HtmlElement):
         self._event_names += [
             "click",
         ]
+
+
+class AssemblyView(HtmlElement):
+    def __init__(self, **kwargs):
+        super().__init__(
+            "vera-assembly-view",
+            **kwargs,
+        )
+        self._attr_names += [
+            "value",
+            ("selected_i", "selectedI"),
+            ("selected_j", "selectedJ"),
+            ("color_preset", "colorPreset"),
+            ("color_range", "colorRange"),
+            ("active_style", ":activeStyle"),
+        ]
+        self._event_names += [
+            "click",
+        ]

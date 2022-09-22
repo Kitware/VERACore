@@ -1,5 +1,7 @@
-import TopQuadrant from './TopQuadrant';
+import VeraTopQuadrant from './TopQuadrant';
+import VeraAssemblyView from './AssemblyView';
 
 export default {
-  'VeraTopQuadrant': TopQuadrant,
+  VeraTopQuadrant,
+  VeraAssemblyView,
 };

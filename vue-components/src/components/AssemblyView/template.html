@@ -1,0 +1,60 @@
+<div class="container" style="width: 100%; height: 100%;">
+  <div :style="scaleStyle" style="position: relative; width: 100%; height: 100%;">
+    <div :style="sizeStyle" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <div class="content">
+      <v-row class="ma-0">
+        <v-sheet
+          height="30"
+          width="30"
+        />
+        <v-sheet
+          v-for="i in sideCount"
+          :key="i"
+          height="30"
+          width="30"
+          class="ml-1 d-flex flex-column justify-center"
+          rounded
+          :dark="i==activeI"
+        >
+          <div class="text-center text-overline">
+            {{ i }}
+          </div>
+        </v-sheet>
+      </v-row>
+      <v-row
+        v-for="j in sideCount"
+        :key="j"
+        class="ma-0"
+      >
+        <v-sheet
+          height="30"
+          width="30"
+          class="mt-1 d-flex flex-column justify-center"
+          rounded
+          :dark="j==activeJ"
+        >
+          <div class="text-center text-overline">
+            {{ j }}
+          </div>
+        </v-sheet>
+        <v-sheet
+          v-for="i in sideCount"
+          :key="i"
+          height="30"
+          width="30"
+          outlined
+          class="ml-1 mt-1 d-flex flex-column justify-center"
+          :style="toStyle(i, j)"
+          :color="colors[toIdx(i, j)]"
+          @click="$emit('click', { i: i - 1, j: j - 1 })"
+          @mouseenter="hover(i, j)"
+          @mouseleave="exit"
+        >
+          <div class="text-center text-caption">
+            {{ toValue(i, j) }}
+          </div>
+        </v-sheet>
+      </v-row>
+    </div>
+  </div>
+</div>

@@ -35,6 +35,6 @@ export default {
         return { background: 'red' };
       }
       return { background: 'green' };
-    }
-  }
+    },
+  },
 };

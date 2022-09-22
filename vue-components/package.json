@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "dependencies": {
     "core-js": "^3.6.5",
+    "@kitware/vtk.js": "25.8.2",
     "vue": "2.6.11"
   },
   "scripts": {
