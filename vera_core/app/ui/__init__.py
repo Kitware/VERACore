@@ -1,6 +1,8 @@
 from trame.ui.vuetify import SinglePageWithDrawerLayout
 from trame.widgets import vuetify, grid, client, html
-from . import assembly_view, axial_view, core_view, empty, time_plot
+from . import (
+    assembly_view, axial_plot, axial_view, core_view, empty, time_plot
+)
 
 DEFAULT_NB_ROWS = 8
 
@@ -22,6 +24,7 @@ def initialize(server, vera_out_file):
     state.setdefault("grid_options", [])
     state.setdefault("grid_layout", [])
     assembly_view.initialize(server, vera_out_file)
+    axial_plot.initialize(server, vera_out_file)
     axial_view.initialize(server, vera_out_file)
     core_view.initialize(server, vera_out_file)
     time_plot.initialize(server, vera_out_file)
@@ -53,10 +56,17 @@ def initialize(server, vera_out_file):
     )
     state[f"grid_view_{view_id}"] = core_view.OPTION
 
-    # Assembly view
+    # Axial plot
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
         dict(x=6, y=12, w=6, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = axial_plot.OPTION
+
+    # Assembly view
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=0, y=24, w=6, h=12, i=view_id),
     )
     state[f"grid_view_{view_id}"] = assembly_view.OPTION
 

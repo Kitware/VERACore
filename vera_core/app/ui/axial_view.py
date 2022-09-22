@@ -81,7 +81,7 @@ def initialize(server, vera_out_file):
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.
             image_data = cached_axial_images[cache_key]
-            ctrl.update_figure(create_image(image_data))
+            ctrl.update_axial_figure(create_image(image_data))
             return
 
         array = getattr(vera_out_file.active_state, selected_array)
@@ -105,10 +105,10 @@ def initialize(server, vera_out_file):
 
         cached_axial_images[cache_key] = image_data
 
-        ctrl.update_figure(create_image(image_data))
+        ctrl.update_axial_figure(create_image(image_data))
 
     with DivLayout(server, template_name="axial_view") as layout:
         # FIXME: why can't we use trame.SizeObserver() here?
         # with trame.SizeObserver("figure_size"):
         html_figure = matplotlib.Figure(style="position: absolute")
-        ctrl.update_figure = html_figure.update
+        ctrl.update_axial_figure = html_figure.update

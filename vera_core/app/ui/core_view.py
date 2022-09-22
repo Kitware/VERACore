@@ -77,10 +77,12 @@ def initialize(server, vera_out_file):
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.
             image_data = cached_core_images[cache_key]
-            ctrl.update_figure(create_image(image_data))
+            ctrl.update_core_figure(create_image(image_data))
             return
 
         array = getattr(vera_out_file.active_state, selected_array)
+
+        control_rod_positions = vera_out_file.core.control_rod_positions
 
         # Load the layer and swap axes for faster indexing
         layer_array = array[:, :, selected_layer].swapaxes(0, 2)
@@ -104,11 +106,12 @@ def initialize(server, vera_out_file):
                     image[i_slice, j_slice] = np.nan
                     continue
 
-                image[i_slice, j_slice] = layer_array[index - 1]
+                assembly_array = layer_array[index - 1]
 
-        if selected_array == "pin_powers":
-            # Make anywhere that is zero be nan
-            image[np.where(image == 0)] = np.nan
+                # Set control rod positions to be nan
+                assembly_array[control_rod_positions] = np.nan
+
+                image[i_slice, j_slice] = assembly_array
 
         # Only allow one image in the cache
         MAX_ITEMS_IN_CACHE = 1
@@ -117,10 +120,10 @@ def initialize(server, vera_out_file):
 
         cached_core_images[cache_key] = image
 
-        ctrl.update_figure(create_image(image))
+        ctrl.update_core_figure(create_image(image))
 
     with DivLayout(server, template_name="core_view"):
         # FIXME: why can't we use trame.SizeObserver() here?
         # with trame.SizeObserver("figure_size"):
         html_figure = matplotlib.Figure(style="position: absolute")
-        ctrl.update_figure = html_figure.update
+        ctrl.update_core_figure = html_figure.update

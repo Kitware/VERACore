@@ -93,6 +93,8 @@ class VeraOutCore(LazyHDF5Loader):
         super().__init__(f, "/CORE", list(self.__annotations__))
         self.compute_reduced_core_map()
         self.compute_axial_mesh_pixels()
+        self.compute_control_rod_positions()
+        self.compute_axial_mesh_means()
 
     def compute_reduced_core_map(self):
         """Compute the reduced core map based upon the core_sym"""
@@ -119,6 +121,22 @@ class VeraOutCore(LazyHDF5Loader):
         pixel_height = np.min(diff_array) / MIN_DIFF_PIXELS_HEIGHT
         pixel_height_array = diff_array / pixel_height
         self.axial_mesh_pixels = np.round(pixel_height_array).astype(np.int64)
+
+    def compute_control_rod_positions(self):
+        # Assume they are the same in every volume
+        first_volume = self.pin_volumes[:, :, 0, 0]
+        self.control_rod_positions = np.where(first_volume == 0)
+
+    def compute_axial_mesh_means(self):
+        # Compute the mean between each neighbor
+        repeats = [2] * len(self.axial_mesh)
+        repeats[0] = 1
+        repeats[-1] = 1
+
+        repeated_mesh = np.repeat(self.axial_mesh, repeats)
+        reshaped = repeated_mesh.reshape((repeated_mesh.shape[0] // 2, 2))
+
+        self.axial_mesh_means = np.mean(reshaped, axis=1)
 
     def row_assembly_indices(self, assembly_idx):
         """Get indices of all assemblies in the same row as this assembly"""

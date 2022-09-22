@@ -87,16 +87,17 @@ def initialize(server, vera_out_file):
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.
             image_data = cached_assembly_images[cache_key]
-            ctrl.update_figure(create_image(image_data))
+            ctrl.update_assembly_figure(create_image(image_data))
             return
 
         array = getattr(vera_out_file.active_state, selected_array)
 
         image = array[:, :, selected_layer, selected_assembly]
 
-        if selected_array == "pin_powers":
-            # Make anywhere that is zero be nan
-            image[np.where(image == 0)] = np.nan
+        control_rod_positions = vera_out_file.core.control_rod_positions
+
+        # Make control rod positions equal to nan
+        image[control_rod_positions] = np.nan
 
         # Only allow one image in the cache
         MAX_ITEMS_IN_CACHE = 1
@@ -105,10 +106,10 @@ def initialize(server, vera_out_file):
 
         cached_assembly_images[cache_key] = image
 
-        ctrl.update_figure(create_image(image))
+        ctrl.update_assembly_figure(create_image(image))
 
     with DivLayout(server, template_name="assembly_view"):
         # FIXME: why can't we use trame.SizeObserver() here?
         # with trame.SizeObserver("figure_size"):
         html_figure = matplotlib.Figure(style="position: absolute")
-        ctrl.update_figure = html_figure.update
+        ctrl.update_assembly_figure = html_figure.update
