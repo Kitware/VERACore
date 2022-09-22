@@ -49,9 +49,14 @@ def initialize(server, vera_out_file):
 
         if "dpi" in figsize_dict:
             dpi = figsize_dict["dpi"]
-            fig.set_depi(dpi)
+            fig.set_dpi(dpi)
 
         axes_image = ax.imshow(img)
+
+        # Make the color ranges match
+        clim = state.color_range
+        if clim is not None:
+            axes_image.set_clim(clim)
 
         nonlocal colorbar
         if colorbar:
