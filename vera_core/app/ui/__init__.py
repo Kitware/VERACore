@@ -41,40 +41,40 @@ def initialize(server, vera_out_file):
     for view_id in available_view_ids:
         state[f"grid_view_{view_id}"] = empty.OPTION
 
-    # Axial view
-    view_id = available_view_ids.pop(0)
-    state.grid_layout.append(
-        dict(x=0, y=0, w=6, h=12, i=view_id),
-    )
-    state[f"grid_view_{view_id}"] = axial_view.OPTION
-
-    # Time plot
-    view_id = available_view_ids.pop(0)
-    state.grid_layout.append(
-        dict(x=6, y=0, w=6, h=12, i=view_id),
-    )
-    state[f"grid_view_{view_id}"] = time_plot.OPTION
-
     # Core view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=0, y=12, w=6, h=12, i=view_id),
+        dict(x=0, y=0, w=4, h=12, i=view_id),
     )
     state[f"grid_view_{view_id}"] = core_view.OPTION
 
-    # Axial plot
+    # Axial view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=6, y=12, w=6, h=12, i=view_id),
+        dict(x=4, y=0, w=4, h=12, i=view_id),
     )
-    state[f"grid_view_{view_id}"] = axial_plot.OPTION
+    state[f"grid_view_{view_id}"] = axial_view.OPTION
 
     # Assembly view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=0, y=24, w=6, h=12, i=view_id),
+        dict(x=8, y=0, w=4, h=12, i=view_id),
     )
     state[f"grid_view_{view_id}"] = assembly_view.OPTION
+
+    # Axial plot
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=0, y=12, w=4, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = axial_plot.OPTION
+
+    # Time plot
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=4, y=12, w=4, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = time_plot.OPTION
 
     @ctrl.set("grid_add_view")
     def add_view():
