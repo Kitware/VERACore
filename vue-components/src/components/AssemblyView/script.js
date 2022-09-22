@@ -74,7 +74,6 @@ export default {
     this.updateColors();
   },
   mounted() {
-    console.log(this.$el);
     this.resizeObserver.observe(this.$el);
   },
   beforeDestroy() {

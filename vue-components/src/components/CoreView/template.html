@@ -1,57 +1,55 @@
 <div class="container" style="width: 100%; height: 100%; overflow: hidden;">
   <div :style="scaleStyle" style="position: relative; width: 100%; height: 100%;">
-    <div :style="sizeStyle" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      <div class="content">
+    <div :style="sizeStyle" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" :key="imagesReady">
+      <v-col class="content ma-0">
       <v-row class="ma-0">
         <v-sheet
           height="30"
           width="30"
         />
         <v-sheet
-          v-for="i in sideCount"
+          v-for="i in coreWidth"
           :key="i"
           height="30"
           width="30"
-          class="ml-1 d-flex flex-column justify-center"
+          class="d-flex flex-column justify-center"
           rounded
-          :dark="i==activeI"
+          :dark="i==activeI+1"
         >
           <div class="text-center text-overline">
-            {{ i }}
+            {{ xLabels[i-1] }}
           </div>
         </v-sheet>
       </v-row>
       <v-row
-        v-for="j in sideCount"
+        v-for="(line, j) in value"
         :key="j"
         class="ma-0"
       >
         <v-sheet
           height="30"
           width="30"
-          class="mt-1 d-flex flex-column justify-center"
+          class="d-flex flex-column justify-center"
           rounded
           :dark="j==activeJ"
         >
           <div class="text-center text-overline">
-            {{ j }}
+            {{ yLabels[j] }}
           </div>
         </v-sheet>
         <v-sheet
-          v-for="i in sideCount"
+          v-for="(assembly, i) in line"
           :key="i"
           height="30"
           width="30"
           outlined
-          class="ml-1 mt-1 d-flex flex-column justify-center"
           :style="toStyle(i, j)"
-          :color="colors[toIdx(i, j)]"
-          @click="$emit('click', { i: i - 1, j: j - 1 })"
+          @click="$emit('click', { i, j })"
           @mouseenter="hover(i, j)"
           @mouseleave="exit"
         >
-          <div class="text-center text-caption">
-            {{ toValue(i, j) }}
+          <div>
+            <img :src="toUrl(i, j)" style="width: 100%; height: 100%" />
           </div>
         </v-sheet>
       </v-row>

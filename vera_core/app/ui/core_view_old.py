@@ -1,25 +1,71 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
 from trame.ui.html import DivLayout
-from vera_core.widgets import vera
+from trame.widgets import matplotlib, trame
 
 OPTION = {
-    "name": "core_view",
-    "label": "Core View",
+    "name": "core_view_old",
+    "label": "Core View (matplotlib)",
     "icon": "mdi-chart-donut-variant",
 }
 
+plt.set_cmap("jet")
+
 
 def initialize(server, vera_out_file):
-    state = server.state
+    state, ctrl = server.state, server.controller
+
+    # Create the figure and axes we will use
+    fig, ax = plt.subplots()
+    colorbar = None
 
     if OPTION not in state.grid_options:
         state.grid_options.append(OPTION)
 
+    def figure_size():
+        if state.core_view_size is None:
+            return {}
+
+        dpi = 96
+        rect = state.core_view_size.get("size")
+        w_inch = rect.get("width") / dpi * 0.8  # Reduce width to better use space
+        h_inch = rect.get("height") / dpi
+
+        return {
+            "figsize": (w_inch, h_inch),
+            "dpi": dpi,
+        }
+
+    def create_image(img):
+        figsize_dict = figure_size()
+        if "figsize" in figsize_dict:
+            width, height = figsize_dict["figsize"]
+            fig.set_figwidth(width)
+            fig.set_figheight(height)
+
+        if "dpi" in figsize_dict:
+            dpi = figsize_dict["dpi"]
+            fig.set_dpi(dpi)
+
+        axes_image = ax.imshow(img)
+
+        # Make the color ranges match
+        clim = state.color_range
+        if clim is not None:
+            axes_image.set_clim(clim)
+
+        nonlocal colorbar
+        if colorbar:
+            colorbar.remove()
+
+        colorbar = fig.colorbar(axes_image)
+        return fig
+
     # A cache of core images.
     cached_core_images = {}
 
-    @state.change("selected_time", "selected_array", "selected_layer")
+    @state.change("core_view_size", "selected_time", "selected_array", "selected_layer")
     def update_core_view(selected_time, selected_array, selected_layer, **kwargs):
         selected_layer = int(selected_layer)
         image_data = None
@@ -72,26 +118,11 @@ def initialize(server, vera_out_file):
 
             cached_core_images[cache_key] = image_data
 
-        # custom widget update
-        reduced_core_map = vera_out_file.core.reduced_core_map
-        assembly_width = array.shape[0]
-        core_width = map_shape[0]
-        state.core_assemblies = []
-        for j in range(core_width):
-            line = []
-            state.core_assemblies.append(line)
-            for i in range(core_width):
-                if reduced_core_map[i, j]:
-                    assembly = image_data[
-                        slice(i * assembly_width, (i + 1) * assembly_width),
-                        slice(j * assembly_width, (j + 1) * assembly_width),
-                    ]
-                    line.append(np.ravel(assembly).tolist())
+        # Matplotlib update
+        ctrl.update_core_figure(create_image(image_data))
 
-    with DivLayout(server, template_name="core_view") as layout:
+    with DivLayout(server, template_name="core_view_old") as layout:
         layout.root.style = "height: 100%;"
-        vera.CoreView(
-            value=("core_assemblies", []),
-            color_preset="jet",
-            color_range=("color_range", [0, 3]),
-        )
+        with trame.SizeObserver("core_view_size"):
+            html_figure = matplotlib.Figure()
+            ctrl.update_core_figure = html_figure.update
