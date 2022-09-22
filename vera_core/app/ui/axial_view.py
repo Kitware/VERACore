@@ -72,8 +72,9 @@ def initialize(server, vera_out_file):
         "selected_j",
         "axial_view_size",
     )
-    def update_axial_view(selected_time, selected_array, selected_assembly,
-                          selected_j, **kwargs):
+    def update_axial_view(
+        selected_time, selected_array, selected_assembly, selected_j, **kwargs
+    ):
         selected_assembly = int(selected_assembly)
         selected_j = int(selected_j)
 

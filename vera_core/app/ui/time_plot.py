@@ -29,7 +29,9 @@ def initialize(server, vera_out_file):
                 "y": selected_array,
             },
         }
-        return px.line(**kwargs)
+        figure = px.line(**kwargs)
+        figure.update_layout(margin=dict(t=0, b=0, l=0, r=0))
+        return figure
 
     @state.change(
         "selected_array",

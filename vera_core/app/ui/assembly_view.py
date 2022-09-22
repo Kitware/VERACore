@@ -76,14 +76,12 @@ def initialize(server, vera_out_file):
         "color_range",
     )
     def update_assembly_view(
-        selected_time, selected_array, selected_assembly, selected_layer,
-        **kwargs
+        selected_time, selected_array, selected_assembly, selected_layer, **kwargs
     ):
         selected_assembly = int(selected_assembly)
         selected_layer = int(selected_layer)
 
-        cache_key = (selected_time, selected_array, selected_assembly,
-                     selected_layer)
+        cache_key = (selected_time, selected_array, selected_assembly, selected_layer)
         if cache_key in cached_assembly_images:
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.

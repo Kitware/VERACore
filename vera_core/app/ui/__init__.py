@@ -1,8 +1,6 @@
 from trame.ui.vuetify import SinglePageWithDrawerLayout
 from trame.widgets import vuetify, grid, client, html
-from . import (
-    assembly_view, axial_plot, axial_view, core_view, empty, time_plot
-)
+from . import assembly_view, axial_plot, axial_view, core_view, empty, time_plot
 
 DEFAULT_NB_ROWS = 8
 

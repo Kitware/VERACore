@@ -66,10 +66,8 @@ def initialize(server, vera_out_file):
     # A cache of core images.
     cached_core_images = {}
 
-    @state.change("core_view_size", "selected_time", "selected_array",
-                  "selected_layer")
-    def update_core_view(selected_time, selected_array, selected_layer,
-                         **kwargs):
+    @state.change("core_view_size", "selected_time", "selected_array", "selected_layer")
+    def update_core_view(selected_time, selected_array, selected_layer, **kwargs):
         selected_layer = int(selected_layer)
 
         cache_key = (selected_layer, selected_array, selected_time)

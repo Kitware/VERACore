@@ -31,14 +31,25 @@ def initialize(server, vera_out_file):
                 "y": "Axial (cm)",
             },
         }
-        return px.line(**kwargs)
+        figure = px.line(**kwargs)
+        figure.update_layout(margin=dict(t=0, b=0, l=0, r=0))
+        return figure
 
-
-    @state.change("selected_time", "selected_array", "selected_assembly",
-                  "selected_layer", "selected_i", "selected_j")
+    @state.change(
+        "selected_time",
+        "selected_array",
+        "selected_assembly",
+        "selected_layer",
+        "selected_i",
+        "selected_j",
+    )
     def on_cell_change(
-        selected_array, selected_assembly, selected_layer, selected_i,
-        selected_j, **kwargs
+        selected_array,
+        selected_assembly,
+        selected_layer,
+        selected_i,
+        selected_j,
+        **kwargs
     ):
         indices = (selected_j, selected_i, selected_layer, selected_assembly)
         indices = tuple(map(int, indices))
