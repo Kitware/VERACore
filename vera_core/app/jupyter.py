@@ -1,8 +1,10 @@
 from trame.app import get_server, jupyter
 from vera_core.app import engine, ui
 
+from .core.vera_out_file import VeraOutFile
 
-def show(server=None, **kwargs):
+
+def show(data=None, server=None, **kwargs):
     """Run and display the trame application in jupyter's event loop
 
     The kwargs are forwarded to IPython.display.IFrame()
@@ -19,9 +21,11 @@ def show(server=None, **kwargs):
     engine_logger = logging.getLogger("vera_core.app.engine")
     engine_logger.setLevel(logging.WARNING)
 
+    vera_out_file = VeraOutFile(data)
+
     # Initialize app
     engine.initialize(server)
-    ui.initialize(server)
+    ui.initialize(server, vera_out_file)
 
     # Show as cell result
     jupyter.show(server, **kwargs)

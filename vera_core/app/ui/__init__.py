@@ -97,13 +97,16 @@ def initialize(server, vera_out_file):
 
             vuetify.VSelect(
                 v_model=("selected_array", "pin_powers"),
-                items=("available_arrays", [
-                    dict(text="Pin Powers", value="pin_powers"),
-                    dict(text="Pin Clad Temps", value="pin_cladtemps"),
-                    dict(text="Pin Fuel Temps", value="pin_fueltemps"),
-                    dict(text="Pin Moderator Density", value="pin_moddens"),
-                    dict(text="Pin Moderator Temps", value="pin_modtemps"),
-                ]),
+                items=(
+                    "available_arrays",
+                    [
+                        dict(text="Pin Powers", value="pin_powers"),
+                        dict(text="Pin Clad Temps", value="pin_cladtemps"),
+                        dict(text="Pin Fuel Temps", value="pin_fueltemps"),
+                        dict(text="Pin Moderator Density", value="pin_moddens"),
+                        dict(text="Pin Moderator Temps", value="pin_modtemps"),
+                    ],
+                ),
                 hide_details=True,
                 dense=True,
                 style="max-width: 220px",

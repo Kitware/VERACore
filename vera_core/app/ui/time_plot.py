@@ -19,8 +19,7 @@ def initialize(server, vera_out_file):
 
     def create_line(selected_array, indices=(0, 0, 0, 0)):
         exposures = [x.exposure[0] for x in vera_out_file.states]
-        array = [getattr(x, selected_array)[indices]
-                 for x in vera_out_file.states]
+        array = [getattr(x, selected_array)[indices] for x in vera_out_file.states]
 
         kwargs = {
             "x": exposures,
@@ -32,11 +31,20 @@ def initialize(server, vera_out_file):
         }
         return px.line(**kwargs)
 
-
-    @state.change("selected_array", "selected_assembly", "selected_layer",
-                  "selected_i", "selected_j")
+    @state.change(
+        "selected_array",
+        "selected_assembly",
+        "selected_layer",
+        "selected_i",
+        "selected_j",
+    )
     def on_cell_change(
-        selected_array, selected_assembly, selected_layer, selected_i, selected_j, **kwargs
+        selected_array,
+        selected_assembly,
+        selected_layer,
+        selected_i,
+        selected_j,
+        **kwargs
     ):
         indices = (selected_j, selected_i, selected_layer, selected_assembly)
         indices = tuple(map(int, indices))

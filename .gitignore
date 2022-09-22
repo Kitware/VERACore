@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 .venv
+build
+.ipynb_checkpoints
 
 # local env files
 .env.local
