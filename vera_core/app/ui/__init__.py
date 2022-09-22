@@ -20,6 +20,12 @@ def initialize(server, vera_out_file):
     state, ctrl = server.state, server.controller
     state.trame__title = "VERACore"
 
+    @state.change("selected_time")
+    def selected_time_changed(selected_time, **kwargs):
+        # This needs to be done before any of the initialize() calls
+        selected_time = int(selected_time)
+        vera_out_file.active_state_index = selected_time
+
     # Initialize all visualizations
     state.setdefault("grid_options", [])
     state.setdefault("grid_layout", [])
@@ -125,6 +131,7 @@ def initialize(server, vera_out_file):
                         "selected_layer": (24, data_shape[2]),
                         "selected_i": (7, data_shape[0]),
                         "selected_j": (7, data_shape[1]),
+                        "selected_time": (0, len(vera_out_file.states)),
                     }
 
                     for index_name, (default, maximum) in index_names.items():

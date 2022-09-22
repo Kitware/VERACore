@@ -42,12 +42,12 @@ def initialize(server, vera_out_file):
         figsize_dict = figure_size()
         if "figsize" in figsize_dict:
             width, height = figsize_dict["figsize"]
-            fig.set_width(width)
-            fig.set_height(height)
+            fig.set_figwidth(width)
+            fig.set_figheight(height)
 
         if "dpi" in figsize_dict:
             dpi = figsize_dict["dpi"]
-            fig.set_depi(dpi)
+            fig.set_dpi(dpi)
 
         axes_image = ax.imshow(img)
 
@@ -66,12 +66,14 @@ def initialize(server, vera_out_file):
 
     @state.change(
         "figure_size",
+        "selected_time",
         "selected_array",
         "selected_assembly",
         "selected_j",
         "axial_view_size",
     )
-    def update_axial_view(selected_array, selected_assembly, selected_j, **kwargs):
+    def update_axial_view(selected_time, selected_array, selected_assembly,
+                          selected_j, **kwargs):
         selected_assembly = int(selected_assembly)
         selected_j = int(selected_j)
 
@@ -79,7 +81,7 @@ def initialize(server, vera_out_file):
             selected_assembly
         )
 
-        cache_key = (tuple(row_assembly_indices), selected_array)
+        cache_key = (tuple(row_assembly_indices), selected_time, selected_array)
         if cache_key in cached_axial_images:
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.

@@ -3,7 +3,7 @@ import numpy as np
 
 from trame.ui.html import DivLayout
 
-from trame.widgets import matplotlib
+from trame.widgets import matplotlib, trame
 
 OPTION = {
     "name": "assembly_view",
@@ -25,15 +25,13 @@ def initialize(server, vera_out_file):
         state.grid_options.append(OPTION)
 
     def figure_size():
-        if state.figure_size is None:
+        if state.assembly_view_size is None:
             return {}
 
-        dpi = state.figure_size.get("dpi")
-        rect = state.figure_size.get("size")
-        w_inch = rect.get("width") / dpi
+        dpi = 96
+        rect = state.assembly_view_size.get("size")
+        w_inch = rect.get("width") / dpi * 0.8  # Reduce width to better use space
         h_inch = rect.get("height") / dpi
-
-        # FIXME: the height isn't working. It is always 0.
 
         return {
             "figsize": (w_inch, h_inch),
@@ -44,8 +42,8 @@ def initialize(server, vera_out_file):
         figsize_dict = figure_size()
         if "figsize" in figsize_dict:
             width, height = figsize_dict["figsize"]
-            fig.set_width(width)
-            fig.set_height(height)
+            fig.set_figwidth(width)
+            fig.set_figheight(height)
 
         if "dpi" in figsize_dict:
             dpi = figsize_dict["dpi"]
@@ -70,19 +68,22 @@ def initialize(server, vera_out_file):
     cached_assembly_images = {}
 
     @state.change(
-        "figure_size",
+        "assembly_view_size",
+        "selected_time",
         "selected_array",
         "selected_assembly",
         "selected_layer",
         "color_range",
     )
     def update_assembly_view(
-        selected_array, selected_assembly, selected_layer, **kwargs
+        selected_time, selected_array, selected_assembly, selected_layer,
+        **kwargs
     ):
         selected_assembly = int(selected_assembly)
         selected_layer = int(selected_layer)
 
-        cache_key = (selected_array, selected_assembly, selected_layer)
+        cache_key = (selected_time, selected_array, selected_assembly,
+                     selected_layer)
         if cache_key in cached_assembly_images:
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.
@@ -108,8 +109,8 @@ def initialize(server, vera_out_file):
 
         ctrl.update_assembly_figure(create_image(image))
 
-    with DivLayout(server, template_name="assembly_view"):
-        # FIXME: why can't we use trame.SizeObserver() here?
-        # with trame.SizeObserver("figure_size"):
-        html_figure = matplotlib.Figure(style="position: absolute")
-        ctrl.update_assembly_figure = html_figure.update
+    with DivLayout(server, template_name="assembly_view") as layout:
+        layout.root.style = "height: 100%;"
+        with trame.SizeObserver("assembly_view_size"):
+            html_figure = matplotlib.Figure()
+            ctrl.update_assembly_figure = html_figure.update

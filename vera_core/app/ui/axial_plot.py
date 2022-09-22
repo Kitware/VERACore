@@ -34,10 +34,11 @@ def initialize(server, vera_out_file):
         return px.line(**kwargs)
 
 
-    @state.change("selected_array", "selected_assembly", "selected_layer",
-                  "selected_i", "selected_j")
+    @state.change("selected_time", "selected_array", "selected_assembly",
+                  "selected_layer", "selected_i", "selected_j")
     def on_cell_change(
-        selected_array, selected_assembly, selected_layer, selected_i, selected_j, **kwargs
+        selected_array, selected_assembly, selected_layer, selected_i,
+        selected_j, **kwargs
     ):
         indices = (selected_j, selected_i, selected_layer, selected_assembly)
         indices = tuple(map(int, indices))
