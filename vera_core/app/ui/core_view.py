@@ -3,11 +3,11 @@ import numpy as np
 
 from trame.ui.html import DivLayout
 
-from trame.widgets import matplotlib, trame
+from trame.widgets import matplotlib
 
 OPTION = {
-    "name": "axial_view",
-    "label": "Axial View",
+    "name": "core_view",
+    "label": "Core View",
     "icon": "mdi-chart-donut-variant",
 }
 
@@ -60,51 +60,61 @@ def initialize(server, vera_out_file):
         colorbar = fig.colorbar(axes_image)
         return fig
 
-    # A cache of axial images.
-    cached_axial_images = {}
+    # A cache of core images.
+    cached_core_images = {}
 
-    @state.change("figure_size", "selected_array", "selected_assembly",
-                  "selected_j")
-    def update_axial_view(selected_array, selected_assembly, selected_j,
-                          **kwargs):
-        selected_assembly = int(selected_assembly)
-        selected_j = int(selected_j)
+    @state.change("figure_size", "selected_array", "selected_layer")
+    def update_core_view(selected_array, selected_layer, **kwargs):
+        selected_layer = int(selected_layer)
 
-        row_assembly_indices = vera_out_file.core.row_assembly_indices(
-            selected_assembly)
-
-        cache_key = (tuple(row_assembly_indices), selected_array)
-        if cache_key in cached_axial_images:
+        cache_key = (selected_layer, selected_array)
+        if cache_key in cached_core_images:
             # Shortcut if we have a cache. We might still need to redraw
             # if the figure size was updated.
-            image_data = cached_axial_images[cache_key]
+            image_data = cached_core_images[cache_key]
             ctrl.update_figure(create_image(image_data))
             return
 
         array = getattr(vera_out_file.active_state, selected_array)
-        # Numpy will tack the indexing subspace on to the beginning
-        image_data = array[selected_j, :, :, row_assembly_indices]
-        image_data = np.vstack(image_data).T
 
-        # For the heights, we will use vera_out_file.core.axial_mesh_pixels
-        # and maybe np.repeat() to repeat the values to make the pixels the
-        # right height (which will reflect their actual assembly height).
-        axial_pixels = vera_out_file.core.axial_mesh_pixels
-        image_data = np.repeat(image_data, axial_pixels, axis=0)
+        # Load the layer and swap axes for faster indexing
+        layer_array = array[:, :, selected_layer].swapaxes(0, 2)
+        layer_array = layer_array.swapaxes(1, 2)
 
-        # Have to reverse the y-axis since ax.invert_yaxis() doesn't work here
-        image_data = image_data[::-1, :]
+        reduced_core_map = vera_out_file.core.reduced_core_map
+        map_shape = reduced_core_map.shape
+
+        # Create the full sized image
+        image_shape = (map_shape[0] * array.shape[0], map_shape[1] * array.shape[1])
+        image = np.empty(image_shape, dtype=array.dtype)
+
+        # Populate it with the arrays
+        for i in range(reduced_core_map.shape[0]):
+            i_slice = slice(i * array.shape[0], (i + 1) * array.shape[0])
+            for j in range(reduced_core_map.shape[1]):
+                j_slice = slice(j * array.shape[1], (j + 1) * array.shape[1])
+                index = reduced_core_map[i, j]
+                if index == 0:
+                    # Empty
+                    image[i_slice, j_slice] = np.nan
+                    continue
+
+                image[i_slice, j_slice] = layer_array[index - 1]
+
+        if selected_array == "pin_powers":
+            # Make anywhere that is zero be nan
+            image[np.where(image == 0)] = np.nan
 
         # Only allow one image in the cache
         MAX_ITEMS_IN_CACHE = 1
-        while len(cached_axial_images) >= MAX_ITEMS_IN_CACHE:
-            cached_axial_images.pop(next(iter(cached_axial_images)))
+        while len(cached_core_images) >= MAX_ITEMS_IN_CACHE:
+            cached_core_images.pop(next(iter(cached_core_images)))
 
-        cached_axial_images[cache_key] = image_data
+        cached_core_images[cache_key] = image
 
-        ctrl.update_figure(create_image(image_data))
+        ctrl.update_figure(create_image(image))
 
-    with DivLayout(server, template_name="axial_view") as layout:
+    with DivLayout(server, template_name="core_view"):
         # FIXME: why can't we use trame.SizeObserver() here?
         # with trame.SizeObserver("figure_size"):
         html_figure = matplotlib.Figure(style="position: absolute")
