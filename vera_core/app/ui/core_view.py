@@ -38,7 +38,6 @@ def initialize(server, vera_out_file):
 
             # Load the layer and swap axes for faster indexing
             layer_array = array[:, :, selected_layer].swapaxes(0, 2)
-            layer_array = layer_array.swapaxes(1, 2)
 
             reduced_core_map = vera_out_file.core.reduced_core_map
             map_shape = reduced_core_map.shape
