@@ -68,9 +68,9 @@ def initialize(server, vera_out_file):
             x_sizes=("axial_core_size_x", []),
             y_sizes=("axial_core_size_y", []),
             y_labels=("axial_core_label_y", []),
-            selected_i=("selected_i", 0),
-            selected_j=("selected_layer", 24),
-            click="selected_layer = $event.j",
+            selected_i=("selected_i",),
+            selected_j=("axial_core_label_y.length - selected_layer - 1",),
+            click="selected_layer = axial_core_label_y.length - $event.j - 1",
             x_scale=("3",),
             y_scale=("3",),
         )

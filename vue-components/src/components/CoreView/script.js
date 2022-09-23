@@ -46,10 +46,10 @@ export default {
   },
   watch: {
     selectedI(i) {
-      this.activeI = i + 1;
+      this.activeI = i;
     },
     selectedJ(j) {
-      this.activeJ = j + 1;
+      this.activeJ = j;
     },
   },
   data() {

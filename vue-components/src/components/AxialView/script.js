@@ -58,10 +58,13 @@ export default {
   },
   watch: {
     selectedI(i) {
-      this.activeI = i + 1;
+      this.activeI = i;
     },
     selectedJ(j) {
-      this.activeJ = j + 1;
+      this.activeJ = j;
+    },
+    value() {
+      this.resize();
     },
   },
   data() {
@@ -112,11 +115,11 @@ export default {
   methods: {
     resize() {
       const { width, height } = this.$el.getBoundingClientRect();
-      let neededWidth = 30 + 2;
+      let neededWidth = 50;
       for (let i = 0; i < this.xSizes.length; i++) {
         neededWidth += 2 + this.xSizes[i] * this.xScale;
       }
-      let neededHeight = 30 + 2;
+      let neededHeight = 50;
       for (let i = 0; i < this.ySizes.length; i++) {
         neededHeight += 2 + this.ySizes[i] * this.yScale;
       }
