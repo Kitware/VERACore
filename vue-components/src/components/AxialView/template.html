@@ -46,6 +46,7 @@
           @mouseenter="hover(i, j)"
           @mouseleave="exit"
           style="position: relative;"
+          :style="toStyle(i, j)"
         >
           <img :src="toUrl(i, j)" style="position: absolute; width: 100%; height: 100%; top:0; left: 0;" />
         </v-sheet>

@@ -6,7 +6,7 @@ from vera_core.widgets import vera
 OPTION = {
     "name": "core_view",
     "label": "Core View",
-    "icon": "mdi-chart-donut-variant",
+    "icon": "mdi-chart-pie",
 }
 
 

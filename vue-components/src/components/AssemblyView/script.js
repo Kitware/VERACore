@@ -55,8 +55,8 @@ export default {
   },
   data() {
     return {
-      activeI: -1,
-      activeJ: -1,
+      activeI: this.selectedI + 1,
+      activeJ: this.selectedJ + 1,
       colors: [],
       sizeStyle: { width: '100px', height: '100px' },
       scaleStyle: { scale: 0.5 },

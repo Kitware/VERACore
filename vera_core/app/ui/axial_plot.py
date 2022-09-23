@@ -7,7 +7,7 @@ from trame.widgets import plotly
 OPTION = {
     "name": "axial_plot",
     "label": "Axial Plot",
-    "icon": "mdi-chart-line",
+    "icon": "mdi-align-horizontal-center",
 }
 
 

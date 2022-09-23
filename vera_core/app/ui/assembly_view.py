@@ -7,7 +7,7 @@ from vera_core.widgets import vera
 OPTION = {
     "name": "assembly_view",
     "label": "Assembly View",
-    "icon": "mdi-chart-donut-variant",
+    "icon": "mdi-dots-grid",
 }
 
 plt.set_cmap("jet")

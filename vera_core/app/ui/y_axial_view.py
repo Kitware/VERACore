@@ -4,9 +4,9 @@ from trame.ui.html import DivLayout
 from vera_core.widgets import vera
 
 OPTION = {
-    "name": "axial_view",
-    "label": "Axial View",
-    "icon": "mdi-chart-donut-variant",
+    "name": "y_axial_view",
+    "label": "Y Axial View",
+    "icon": "mdi-border-vertical",
 }
 
 
@@ -43,34 +43,37 @@ def initialize(server, vera_out_file):
         # Extract cell sizes
         nb_lines = image_data.shape[0]
         nb_cols = int(image_data.shape[1] / assembly_size)
-        state.axial_core_size_y = vera_out_file.core.axial_mesh_pixels.tolist()
-        state.axial_core_size_x = [assembly_size for i in range(nb_cols)]
-        state.axial_core_label_y = [i + 1 for i in range(len(state.axial_core_size_y))]
-        state.axial_core_label_y.reverse()
+        state.y_axial_core_size_y = vera_out_file.core.axial_mesh_pixels.tolist()
+        state.y_axial_core_size_x = [assembly_size for i in range(nb_cols)]
+        state.y_axial_core_label_y = [
+            i + 1 for i in range(len(state.y_axial_core_size_y))
+        ]
+        state.y_axial_core_label_y.reverse()
 
         # Update UI
-        state.axial_core = []
+        state.y_axial_core = []
         for j in range(nb_lines):
             line = []
-            state.axial_core.append(line)
+            state.y_axial_core.append(line)
             for i in range(nb_cols):
                 assembly = image_data[
                     j, slice(i * assembly_size, (i + 1) * assembly_size)
                 ]
                 line.append(np.ravel(assembly).tolist())
 
-    with DivLayout(server, template_name="axial_view") as layout:
+    with DivLayout(server, template_name="y_axial_view") as layout:
         layout.root.style = "height: 100%;"
         vera.AxialView(
-            value=("axial_core", []),
+            value=("y_axial_core", []),
             color_preset="jet",
             color_range=("color_range", [0, 3]),
-            x_sizes=("axial_core_size_x", []),
-            y_sizes=("axial_core_size_y", []),
-            y_labels=("axial_core_label_y", []),
-            selected_i=("selected_i",),
-            selected_j=("axial_core_label_y.length - selected_layer - 1",),
-            click="selected_layer = axial_core_label_y.length - $event.j - 1",
+            x_sizes=("y_axial_core_size_x", []),
+            y_sizes=("y_axial_core_size_y", []),
+            x_labels=("y_axial_core_label_x", list(range(8, 15))),  # FIXME
+            y_labels=("y_axial_core_label_y", []),
+            selected_i=("selected_assembly_ij.i",),
+            selected_j=("y_axial_core_label_y.length - selected_layer - 1",),
+            click="selected_layer = y_axial_core_label_y.length - $event.j - 1; selected_assembly_ij = { j: $event.i, i: selected_assembly_ij.i }",
             x_scale=("3",),
             y_scale=("3",),
         )

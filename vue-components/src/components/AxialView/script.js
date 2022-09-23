@@ -69,8 +69,8 @@ export default {
   },
   data() {
     return {
-      activeI: -1,
-      activeJ: -1,
+      activeI: this.selectedI,
+      activeJ: this.selectedJ,
       sizeStyle: { width: '100px', height: '100px' },
       scaleStyle: { scale: 1 },
       imagesReady: 0,
