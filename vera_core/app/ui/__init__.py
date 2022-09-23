@@ -8,6 +8,7 @@ from . import (
     time_plot,
     x_axial_view,
     y_axial_view,
+    assets,
 )
 
 DEFAULT_NB_ROWS = 8
@@ -117,10 +118,11 @@ def initialize(server, vera_out_file):
     # Setup main layout
     with SinglePageLayout(server) as layout:
         # Toolbar
-        layout.title.set_text("VERACore")
         with layout.toolbar as toolbar:
-            layout.icon
+            toolbar.clear()
             toolbar.height = 36
+
+            html.Img(src=assets.LOGO, height=25)
             vuetify.VSpacer()
 
             vuetify.VSelect(

@@ -2,7 +2,7 @@ from functools import partial
 
 from trame.app import get_server, dev
 
-from . import engine, ui
+from . import ui
 from .core.vera_out_file import VeraOutFile
 
 
@@ -38,7 +38,6 @@ def main(server=None, **kwargs):
     server.controller.on_server_reload.add(f)
 
     # Init application
-    engine.initialize(server)
     ui.initialize(server, vera_out_file)
 
     # Start server
