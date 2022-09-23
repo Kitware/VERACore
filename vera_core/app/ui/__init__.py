@@ -25,8 +25,9 @@ def initialize(server, vera_out_file):
     state, ctrl = server.state, server.controller
     state.trame__title = "VERACore"
 
-    # FIXME: For our example, fix this. Come up with a way to autogenerate it.
-    state.color_range = (0.12, 1.76)
+    # FIXME: For our example, fix this to match VeraView.
+    # Come up with a way to autogenerate it.
+    state.color_range = (0.0273, 1.95)
 
     @state.change("selected_time")
     def selected_time_changed(selected_time, **kwargs):
