@@ -1,3 +1,5 @@
+import numpy as np
+
 from trame.ui.vuetify import SinglePageLayout
 from trame.widgets import vuetify, grid, client, html
 from . import (
@@ -40,6 +42,11 @@ def initialize(server, vera_out_file):
         # This needs to be done before any of the initialize() calls
         selected_time = int(selected_time)
         vera_out_file.active_state_index = selected_time
+
+    @state.change("selected_array")
+    def selected_array_changed(selected_array, **kwargs):
+        array = getattr(vera_out_file.active_state, selected_array)
+        state.color_range = (np.nanmin(array), np.nanmax(array))
 
     # Initialize all visualizations
     state.setdefault("grid_options", [])
