@@ -2,7 +2,7 @@ import { LookupTable } from '../../utils/Colors';
 import { toImageURL } from '../../utils/ImageGenerator';
 
 export default {
-  name: 'VeraCore',
+  name: 'VeraAxial',
   props: {
     value: {
       type: Array,
@@ -39,9 +39,21 @@ export default {
       type: Array,
       default: () => ['8', '9', '10', '11', '12', '13', '14', '15'],
     },
-    scaling: {
+    xScale: {
       type: Number,
       default: 2,
+    },
+    yScale: {
+      type: Number,
+      default: 3,
+    },
+    xSizes: {
+      type: Array,
+      default: () => [],
+    },
+    ySizes: {
+      type: Array,
+      default: () => [],
     },
   },
   watch: {
@@ -62,12 +74,6 @@ export default {
     };
   },
   computed: {
-    coreWidth() {
-      return this.value[0].length;
-    },
-    assemblyWidth() {
-      return Math.sqrt(this.value[0][0].length);
-    },
     colorMap() {
       return this.lookupTable.update(this.colorPreset, this.colorRange);
     },
@@ -75,7 +81,6 @@ export default {
       // Dependencies
       const array = this.value;
       const lut = this.colorMap;
-      const width = this.assemblyWidth;
 
       // Build computed structure
       const images = [];
@@ -84,9 +89,9 @@ export default {
         const lineImages = [];
         images.push(lineImages);
         for (let i = 0; i < line.length; i++) {
-          lineImages.push(
-            toImageURL(lut, line[i], width, width, this.scaling, this.scaling)
-          );
+          const cell = line[i];
+          const cellWidth = cell.length;
+          lineImages.push(toImageURL(lut, cell, cellWidth, 1, this.xScale, 1));
         }
       }
       this.imagesReady++;
@@ -107,13 +112,19 @@ export default {
   methods: {
     resize() {
       const { width, height } = this.$el.getBoundingClientRect();
-      const neededSize = (this.coreWidth + 1) * 32;
-      const availableSpace = Math.min(width, height);
-      const scale = availableSpace / neededSize;
+      let neededWidth = 30 + 2;
+      for (let i = 0; i < this.xSizes.length; i++) {
+        neededWidth += 2 + this.xSizes[i] * this.xScale;
+      }
+      let neededHeight = 30 + 2;
+      for (let i = 0; i < this.ySizes.length; i++) {
+        neededHeight += 2 + this.ySizes[i] * this.yScale;
+      }
+      const scale = Math.min(width / neededWidth, height / neededHeight);
       this.scaleStyle = { scale };
       this.sizeStyle = {
-        width: `${neededSize + 10}px`,
-        height: `${neededSize + 10}px`,
+        width: `${neededWidth + 10}px`,
+        height: `${neededHeight + 10}px`,
       };
     },
     hover(i, j) {

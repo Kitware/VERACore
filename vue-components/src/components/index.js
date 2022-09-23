@@ -1,9 +1,9 @@
-import VeraTopQuadrant from './TopQuadrant';
 import VeraAssemblyView from './AssemblyView';
+import VeraAxialView from './AxialView';
 import VeraCoreView from './CoreView';
 
 export default {
-  VeraTopQuadrant,
   VeraAssemblyView,
+  VeraAxialView,
   VeraCoreView,
 };
