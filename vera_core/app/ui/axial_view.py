@@ -69,7 +69,7 @@ def initialize(server, vera_out_file):
             y_sizes=("axial_core_size_y", []),
             y_labels=("axial_core_label_y", []),
             selected_i=("selected_i", 0),
-            selected_j=("selected_layer", 0),
+            selected_j=("selected_layer", 24),
             click="selected_layer = $event.j",
             x_scale=("3",),
             y_scale=("3",),
