@@ -68,8 +68,8 @@ def initialize(server, vera_out_file):
         layout.root.style = "height: 100%;"
         vera.AssemblyView(
             value=("assembly_array", []),
-            selected_i=("selected_i", 0),
-            selected_j=("selected_j", 0),
+            selected_i=("selected_i", 7),
+            selected_j=("selected_j", 7),
             color_preset="jet",
             color_range=("color_range", [0, 3]),
             click="selected_i = $event.i;selected_j = $event.j;",

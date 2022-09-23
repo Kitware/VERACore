@@ -16,6 +16,14 @@ def initialize(server, vera_out_file):
     if OPTION not in state.grid_options:
         state.grid_options.append(OPTION)
 
+    state.selected_assembly_ij = {"i": 4, "j": 4}
+
+    @state.change("selected_assembly_ij")
+    def selected_assembly_ij_changed(selected_assembly_ij, **kwargs):
+        i, j = selected_assembly_ij["i"], selected_assembly_ij["j"]
+        reduced_core_map = vera_out_file.core.reduced_core_map
+        state.selected_assembly = int(reduced_core_map[j, i] - 1)
+
     @state.change("selected_time", "selected_array", "selected_layer")
     def update_core_view(selected_array, selected_layer, **kwargs):
         selected_layer = int(selected_layer)
@@ -51,6 +59,9 @@ def initialize(server, vera_out_file):
         layout.root.style = "height: 100%;"
         vera.CoreView(
             value=("core_assemblies", []),
+            selected_i=("selected_assembly_ij.i",),
+            selected_j=("selected_assembly_ij.j",),
             color_preset="jet",
             color_range=("color_range", [0, 3]),
+            click="selected_assembly_ij = $event",
         )
