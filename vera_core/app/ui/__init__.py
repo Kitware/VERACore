@@ -7,7 +7,6 @@ from . import (
     core_view,
     empty,
     time_plot,
-    core_view_old,
 )
 
 DEFAULT_NB_ROWS = 8
@@ -39,7 +38,6 @@ def initialize(server, vera_out_file):
     axial_plot.initialize(server, vera_out_file)
     axial_view.initialize(server, vera_out_file)
     core_view.initialize(server, vera_out_file)
-    core_view_old.initialize(server, vera_out_file)
     time_plot.initialize(server, vera_out_file)
     empty.initialize(server)
 
