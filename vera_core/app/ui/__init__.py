@@ -132,11 +132,11 @@ def initialize(server, vera_out_file):
                     data_shape = vera_out_file.core.pin_volumes.shape
                     # The values are the (default, maxes)
                     index_names = {
-                        "selected_assembly": (36, data_shape[3]),
-                        "selected_layer": (24, data_shape[2]),
-                        "selected_i": (7, data_shape[0]),
-                        "selected_j": (7, data_shape[1]),
-                        "selected_time": (0, len(vera_out_file.states)),
+                        "selected_assembly": (36, data_shape[3] - 1),
+                        "selected_layer": (24, data_shape[2] - 1),
+                        "selected_i": (7, data_shape[0] - 1),
+                        "selected_j": (7, data_shape[1] - 1),
+                        "selected_time": (0, len(vera_out_file.states) - 1),
                     }
 
                     for index_name, (default, maximum) in index_names.items():
