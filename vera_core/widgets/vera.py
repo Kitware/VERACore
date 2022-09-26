@@ -73,3 +73,18 @@ class AxialView(HtmlElement):
         self._event_names += [
             "click",
         ]
+
+
+class ColorMapEditor(HtmlElement):
+    def __init__(self, **kwargs):
+        super().__init__(
+            "vera-color-map-editor",
+            **kwargs,
+        )
+        self._attr_names += [
+            "value",
+            ("color_preset", "colorPreset"),
+        ]
+        self._event_names += [
+            "input",
+        ]

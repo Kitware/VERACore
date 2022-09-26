@@ -1,0 +1,24 @@
+<div class="d-flex align-center">
+  <v-text-field
+    v-model="minValue"
+    @change="validateRange"
+    hide-details
+    dense
+    class="textField"
+  />
+  <div class="colorBarContainer">
+    <img
+      :src="imgSrc"
+      class="colorBar"
+    />
+    <v-spacer />
+  </div>
+  <v-text-field
+    v-model="maxValue"
+    @change="validateRange"
+    hide-details
+    dense
+    reverse
+    class="textField"
+  />
+</v-row>

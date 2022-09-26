@@ -2,6 +2,7 @@ import numpy as np
 
 from trame.ui.vuetify import SinglePageLayout
 from trame.widgets import vuetify, grid, client, html
+from vera_core.widgets import vera
 from . import (
     assembly_view,
     axial_plot,
@@ -130,6 +131,13 @@ def initialize(server, vera_out_file):
             toolbar.height = 36
 
             html.Img(src=assets.LOGO, height=25)
+            vuetify.VSpacer()
+
+            vera.ColorMapEditor(
+                v_model="color_range",
+                color_preset="jet",
+            )
+
             vuetify.VSpacer()
 
             vuetify.VSelect(

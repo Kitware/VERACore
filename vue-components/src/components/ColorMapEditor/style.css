@@ -1,0 +1,22 @@
+.colorBarContainer {
+  position: relative;
+  height: 20px;
+  max-width: 400px;
+  min-width: 255px;
+  flex: 1;
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 0 5px;
+}
+
+.colorBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.textField {
+  max-width: 80px;
+}
