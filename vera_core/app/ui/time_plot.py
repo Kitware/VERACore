@@ -19,7 +19,13 @@ def initialize(server, vera_out_file):
 
     def create_line(selected_array, indices=(0, 0, 0, 0)):
         exposures = [x.exposure[0] for x in vera_out_file.states]
-        array = [getattr(x, selected_array)[indices] for x in vera_out_file.states]
+
+        if selected_array == "pin_volumes":
+            # It's just going to be a flat line. The volumes don't change.
+            pin_volumes = vera_out_file.core.pin_volumes
+            array = [pin_volumes[indices] for _ in vera_out_file.states]
+        else:
+            array = [getattr(x, selected_array)[indices] for x in vera_out_file.states]
 
         kwargs = {
             "x": exposures,

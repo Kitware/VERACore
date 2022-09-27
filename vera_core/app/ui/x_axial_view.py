@@ -30,7 +30,7 @@ def initialize(server, vera_out_file):
         row_assembly_indices = vera_out_file.core.row_assembly_indices(
             selected_assembly
         )
-        array = getattr(vera_out_file.active_state, selected_array)
+        array = vera_out_file.array(selected_array)
         assembly_size = array.shape[0]
 
         # Numpy will tack the indexing subspace on to the beginning

@@ -46,7 +46,7 @@ def initialize(server, vera_out_file):
 
         # Extract data from H5 + add to cache
         if image_data is None:
-            array = getattr(vera_out_file.active_state, selected_array)
+            array = vera_out_file.array(selected_array)
             image_data = array[:, :, selected_layer, selected_assembly]
             control_rod_positions = vera_out_file.core.control_rod_positions
 

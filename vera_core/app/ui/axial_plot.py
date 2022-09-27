@@ -20,7 +20,7 @@ def initialize(server, vera_out_file):
     def create_line(selected_array, indices=(0, 0, 0, 0)):
         selected_j, selected_i, selected_layer, selected_assembly = indices
 
-        full_array = getattr(vera_out_file.active_state, selected_array)
+        full_array = vera_out_file.array(selected_array)
         array = full_array[selected_j, selected_i, :, selected_assembly]
 
         kwargs = {

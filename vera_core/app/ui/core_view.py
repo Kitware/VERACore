@@ -28,7 +28,7 @@ def initialize(server, vera_out_file):
     def update_core_view(selected_array, selected_layer, **kwargs):
         selected_layer = int(selected_layer)
 
-        array = getattr(vera_out_file.active_state, selected_array)
+        array = vera_out_file.array(selected_array)
 
         # Load the layer and swap axes for faster indexing
         layer_array = array[:, :, selected_layer].swapaxes(0, 2)

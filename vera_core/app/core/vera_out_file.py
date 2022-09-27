@@ -47,6 +47,21 @@ class VeraOutFile:
         self._active_state_index = index
         self.active_state._cache_all()
 
+    def array(self, array_name):
+        # Get the array with the name "array_name", either on the active state,
+        # or on the core.
+
+        # These are on the core
+        arrays_on_core = [
+            "pin_volumes",
+        ]
+        if array_name in arrays_on_core:
+            # This one is on the core
+            return getattr(self.core, array_name)
+
+        # If not on the core, assume it is on the active states.
+        return getattr(self.active_state, array_name)
+
 
 class LazyHDF5Loader:
     def __init__(self, f, path, dataset_names):

@@ -46,7 +46,7 @@ def initialize(server, vera_out_file):
 
     @state.change("selected_array")
     def selected_array_changed(selected_array, **kwargs):
-        array = getattr(vera_out_file.active_state, selected_array)
+        array = vera_out_file.array(selected_array)
         state.color_range = (np.nanmin(array), np.nanmax(array))
 
     # Initialize all visualizations
@@ -150,6 +150,7 @@ def initialize(server, vera_out_file):
                         dict(text="Pin Fuel Temps", value="pin_fueltemps"),
                         dict(text="Pin Moderator Density", value="pin_moddens"),
                         dict(text="Pin Moderator Temps", value="pin_modtemps"),
+                        dict(text="Pin Volumes", value="pin_volumes"),
                     ],
                 ),
                 hide_details=True,
