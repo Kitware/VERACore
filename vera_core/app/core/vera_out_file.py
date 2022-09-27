@@ -147,6 +147,14 @@ class VeraOutCore(LazyHDF5Loader):
         ids = ids[ids > 0]
         return ids - 1
 
+    def col_assembly_indices(self, assembly_idx):
+        """Get indices of all assemblies in the same column as this assembly"""
+        col = np.where(self.reduced_core_map == assembly_idx + 1)[1][0]
+        ids = self.reduced_core_map[:, col]
+        # Remove any zeros
+        ids = ids[ids > 0]
+        return ids - 1
+
 
 class VeraOutState(LazyHDF5Loader):
     # These are the attributes that will be read from the HDF5 file

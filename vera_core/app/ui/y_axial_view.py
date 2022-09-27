@@ -20,21 +20,21 @@ def initialize(server, vera_out_file):
         "selected_time",
         "selected_array",
         "selected_assembly",
-        "selected_j",
+        "selected_i",
     )
     def update_axial_view(
-        selected_time, selected_array, selected_assembly, selected_j, **kwargs
+        selected_time, selected_array, selected_assembly, selected_i, **kwargs
     ):
         selected_assembly = int(selected_assembly)
-        selected_j = int(selected_j)
-        row_assembly_indices = vera_out_file.core.row_assembly_indices(
+        selected_i = int(selected_i)
+        col_assembly_indices = vera_out_file.core.col_assembly_indices(
             selected_assembly
         )
         array = getattr(vera_out_file.active_state, selected_array)
         assembly_size = array.shape[0]
 
         # Numpy will tack the indexing subspace on to the beginning
-        image_data = array[selected_j, :, :, row_assembly_indices]
+        image_data = array[:, selected_i, :, col_assembly_indices]
         image_data = np.vstack(image_data).T
 
         # Have to reverse the y-axis since ax.invert_yaxis() doesn't work here
