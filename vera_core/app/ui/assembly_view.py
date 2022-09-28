@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 from trame.ui.html import DivLayout
@@ -9,8 +8,6 @@ OPTION = {
     "label": "Assembly View",
     "icon": "mdi-dots-grid",
 }
-
-plt.set_cmap("jet")
 
 
 def initialize(server, vera_out_file):
