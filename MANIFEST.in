@@ -1,1 +1,2 @@
 graft vera_core/module/serve
+graft vera_core/app/ui/assets
