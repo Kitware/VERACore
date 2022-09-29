@@ -27,6 +27,8 @@ OPTION = {
     "icon": "mdi-rotate-3d",
 }
 
+reset_camera_count = 0
+
 
 def initialize(server, vera_out_file):
     state, ctrl = server.state, server.controller
@@ -39,6 +41,8 @@ def initialize(server, vera_out_file):
     ren_win = vtkRenderWindow()
     ren_win.AddRenderer(ren)
     ren_win.OffScreenRenderingOn()
+
+    ren.SetBackground(1, 1, 1)
 
     iren = vtkRenderWindowInteractor()
     iren.SetInteractorStyle(vtkInteractorStyleTrackballCamera())
@@ -55,7 +59,8 @@ def initialize(server, vera_out_file):
     # FIXME: for now, let's make it fully opaque so it matches veraview
     # exactly.
     opacity_points = [
-        (0.00, 1),
+        (0.00, 0),
+        (0.01, 1),
         (1.95, 1),
     ]
 
@@ -124,6 +129,7 @@ def initialize(server, vera_out_file):
         "selected_array",
     )
     def update_volume_view(selected_time, selected_array, **kwargs):
+        global reset_camera_count
         array = vera_out_file.array(selected_array)
 
         # Let's convert the data into a volume format
@@ -167,12 +173,14 @@ def initialize(server, vera_out_file):
         pd.SetScalars(vtk_array)
         volume_data.Modified()
 
-        ren.ResetCameraClippingRange()
-        ren.ResetCamera()
-
         # Update the view
-        ren_win.Render()
-        ctrl.reset_camera()
+        # ren_win.Render()
+        if reset_camera_count < 2:
+            ren.ResetCameraClippingRange()
+            ren.ResetCamera()
+            reset_camera_count += 1
+            ctrl.reset_camera()
+
         ctrl.view_update()
 
         # Save a copy of the orientation marker so it won't go out of scope

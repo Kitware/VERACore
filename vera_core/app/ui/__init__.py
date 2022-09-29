@@ -70,49 +70,49 @@ def initialize(server, vera_out_file):
     # X Axial view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=0, y=0, w=3, h=24, i=view_id),
+        dict(x=0, y=0, w=3, h=17, i=view_id),
     )
     state[f"grid_view_{view_id}"] = x_axial_view.OPTION
 
     # Y Axial view
-    view_id = available_view_ids.pop(0)
-    state.grid_layout.append(
-        dict(x=3, y=0, w=3, h=24, i=view_id),
-    )
-    state[f"grid_view_{view_id}"] = y_axial_view.OPTION
+    # view_id = available_view_ids.pop(0)
+    # state.grid_layout.append(
+    #     dict(x=3, y=0, w=3, h=20, i=view_id),
+    # )
+    # state[f"grid_view_{view_id}"] = y_axial_view.OPTION
 
     # Core view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=6, y=0, w=3, h=12, i=view_id),
+        dict(x=6, y=0, w=3, h=9, i=view_id),
     )
     state[f"grid_view_{view_id}"] = core_view.OPTION
 
     # Assembly view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=9, y=0, w=3, h=12, i=view_id),
+        dict(x=9, y=0, w=3, h=9, i=view_id),
     )
     state[f"grid_view_{view_id}"] = assembly_view.OPTION
 
     # Axial plot
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=6, y=12, w=3, h=12, i=view_id),
+        dict(x=6, y=9, w=3, h=8, i=view_id),
     )
     state[f"grid_view_{view_id}"] = axial_plot.OPTION
 
     # Time plot
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=9, y=12, w=3, h=12, i=view_id),
+        dict(x=9, y=9, w=3, h=8, i=view_id),
     )
     state[f"grid_view_{view_id}"] = time_plot.OPTION
 
     # Volume view
     view_id = available_view_ids.pop(0)
     state.grid_layout.append(
-        dict(x=9, y=24, w=3, h=12, i=view_id),
+        dict(x=3, y=0, w=3, h=17, i=view_id),
     )
     state[f"grid_view_{view_id}"] = volume_view.OPTION
 
