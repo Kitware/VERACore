@@ -11,6 +11,7 @@ from . import (
     time_plot,
     x_axial_view,
     y_axial_view,
+    volume_view,
     assets,
 )
 
@@ -58,6 +59,7 @@ def initialize(server, vera_out_file):
     y_axial_view.initialize(server, vera_out_file)
     core_view.initialize(server, vera_out_file)
     time_plot.initialize(server, vera_out_file)
+    volume_view.initialize(server, vera_out_file)
     empty.initialize(server)
 
     # Reserve the various views
@@ -106,6 +108,13 @@ def initialize(server, vera_out_file):
         dict(x=9, y=12, w=3, h=12, i=view_id),
     )
     state[f"grid_view_{view_id}"] = time_plot.OPTION
+
+    # Volume view
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=9, y=24, w=3, h=12, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = volume_view.OPTION
 
     @ctrl.set("grid_add_view")
     def add_view():
