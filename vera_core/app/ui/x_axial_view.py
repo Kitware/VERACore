@@ -11,20 +11,18 @@ OPTION = {
 
 
 def initialize(server, vera_out_file):
-    state = server.state
+    state, ctrl = server.state, server.controller
 
     if OPTION not in state.grid_options:
         state.grid_options.append(OPTION)
 
     @state.change(
-        "selected_time",
         "selected_array",
         "selected_assembly",
         "selected_j",
     )
-    def update_axial_view(
-        selected_time, selected_array, selected_assembly, selected_j, **kwargs
-    ):
+    @ctrl.add("on_vera_out_active_state_index_changed")
+    def update_axial_view(selected_array, selected_assembly, selected_j, **kwargs):
         selected_assembly = int(selected_assembly)
         selected_j = int(selected_j)
         row_assembly_indices = vera_out_file.core.row_assembly_indices(

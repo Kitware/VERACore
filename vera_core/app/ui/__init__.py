@@ -41,9 +41,12 @@ def initialize(server, vera_out_file):
 
     @state.change("selected_time")
     def selected_time_changed(selected_time, **kwargs):
-        # This needs to be done before any of the initialize() calls
         selected_time = int(selected_time)
         vera_out_file.active_state_index = selected_time
+
+        ctrl.on_vera_out_active_state_index_changed(
+            selected_time=selected_time, **kwargs
+        )
 
     @state.change("selected_array")
     def selected_array_changed(selected_array, **kwargs):

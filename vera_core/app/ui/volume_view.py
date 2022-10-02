@@ -124,11 +124,9 @@ def initialize(server, vera_out_file):
         ren_win.Render()
         ctrl.view_update()
 
-    @state.change(
-        "selected_time",
-        "selected_array",
-    )
-    def update_volume_view(selected_time, selected_array, **kwargs):
+    @state.change("selected_array")
+    @ctrl.add("on_vera_out_active_state_index_changed")
+    def update_volume_view(selected_array, **kwargs):
         global reset_camera_count
         array = vera_out_file.array(selected_array)
 

@@ -1,4 +1,6 @@
+import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
 
 from trame.ui.html import DivLayout
 from trame.widgets import plotly
@@ -36,6 +38,27 @@ def initialize(server, vera_out_file):
             },
         }
         figure = px.line(**kwargs)
+
+        # Add a vertical line indicating our current exposure
+        # # FIXME: why is add_vline only plotting from y==0 to y==1?
+        # kwargs = {
+        #     "x": vera_out_file.active_state.exposure[0],
+        #     "line_dash": "dash",
+        #     "line_color": "red",
+        # }
+        # figure.add_vline(**kwargs)
+        #
+        # # Because the above won't work, we have to make it manually
+        float_info = np.finfo(np.float64)
+        kwargs = {
+            "x": [vera_out_file.active_state.exposure[0]] * 2,
+            "y": [float_info.min, float_info.max],
+            "mode": "lines",
+            "line": go.scatter.Line(color="red", dash="dash"),
+            "showlegend": False,
+        }
+        figure.add_trace(go.Scatter(**kwargs))
+
         figure.update_layout(margin=dict(t=0, b=0, l=0, r=0))
         return figure
 
@@ -46,6 +69,7 @@ def initialize(server, vera_out_file):
         "selected_i",
         "selected_j",
     )
+    @ctrl.add("on_vera_out_active_state_index_changed")
     def on_cell_change(
         selected_array,
         selected_assembly,
