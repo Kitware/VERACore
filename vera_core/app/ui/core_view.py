@@ -16,14 +16,6 @@ def initialize(server, vera_out_file):
     if OPTION not in state.grid_options:
         state.grid_options.append(OPTION)
 
-    state.selected_assembly_ij = {"i": 4, "j": 4}
-
-    @state.change("selected_assembly_ij")
-    def selected_assembly_ij_changed(selected_assembly_ij, **kwargs):
-        i, j = selected_assembly_ij["i"], selected_assembly_ij["j"]
-        reduced_core_map = vera_out_file.core.reduced_core_map
-        state.selected_assembly = int(reduced_core_map[j, i] - 1)
-
     @state.change("selected_array", "selected_layer")
     @ctrl.add("on_vera_out_active_state_index_changed")
     def update_core_view(selected_array, selected_layer, **kwargs):

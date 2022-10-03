@@ -53,6 +53,21 @@ def initialize(server, vera_out_file):
         array = vera_out_file.array(selected_array)
         state.color_range = (np.nanmin(array), np.nanmax(array))
 
+    # Keep selected_assembly and selected_assembly_ij in sync
+    @state.change("selected_assembly_ij")
+    def selected_assembly_ij_changed(selected_assembly_ij, **kwargs):
+        i, j = selected_assembly_ij["i"], selected_assembly_ij["j"]
+        state.selected_assembly = vera_out_file.core.reduced_core_map_assembly(i, j)
+
+    @state.change("selected_assembly")
+    def selected_assembly_changed(selected_assembly, **kwargs):
+        reduced_core_map = vera_out_file.core.reduced_core_map
+        j, i = map(int, np.where(reduced_core_map == selected_assembly + 1))
+        state.selected_assembly_ij = dict(i=i, j=j)
+
+    # Go ahead and make sure they are in sync
+    selected_assembly_changed(state.selected_assembly)
+
     # Initialize all visualizations
     state.setdefault("grid_options", [])
     state.setdefault("grid_layout", [])

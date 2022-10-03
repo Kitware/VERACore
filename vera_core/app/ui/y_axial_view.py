@@ -16,6 +16,13 @@ def initialize(server, vera_out_file):
     if OPTION not in state.grid_options:
         state.grid_options.append(OPTION)
 
+    def axial_cell_selected(layer, assembly_j):
+        assembly_i = state.selected_assembly_ij["i"]
+        state.selected_assembly = vera_out_file.core.reduced_core_map_assembly(
+            assembly_i, assembly_j
+        )
+        state.selected_layer = layer
+
     @state.change(
         "selected_array",
         "selected_assembly",
@@ -71,7 +78,10 @@ def initialize(server, vera_out_file):
             y_labels=("y_axial_core_label_y", []),
             selected_i=("selected_assembly_ij.i",),
             selected_j=("y_axial_core_label_y.length - selected_layer - 1",),
-            click="selected_layer = y_axial_core_label_y.length - $event.j - 1; selected_assembly_ij = { j: $event.i, i: selected_assembly_ij.i }",
+            click=(
+                axial_cell_selected,
+                "[y_axial_core_label_y.length - $event.j - 1, $event.i]",
+            ),
             x_scale=("3",),
             y_scale=("3",),
         )

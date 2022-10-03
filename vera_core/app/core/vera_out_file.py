@@ -170,6 +170,10 @@ class VeraOutCore(LazyHDF5Loader):
         ids = ids[ids > 0]
         return ids - 1
 
+    def reduced_core_map_assembly(self, i, j):
+        # Get the index of the assembly at reduced core map position i, j
+        return int(self.reduced_core_map[j, i] - 1)
+
 
 class VeraOutState(LazyHDF5Loader):
     # These are the attributes that will be read from the HDF5 file

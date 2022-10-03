@@ -69,5 +69,5 @@ def initialize(server, vera_out_file):
             selected_j=("selected_j", 7),
             color_preset="jet",
             color_range=("color_range", [0, 3]),
-            click="selected_i = $event.i;selected_j = $event.j;",
+            click="setAll({ selected_i: $event.i, selected_j: $event.j})",
         )
