@@ -116,11 +116,13 @@ class VeraOutCore(LazyHDF5Loader):
         sym = self.core_sym[0]
         if sym == 1:
             self.reduced_core_map = self.core_map[:].copy()
+            self.reduced_core_map_start_index = 0
         elif sym == 4:
             w, h = self.core_map[:].shape
             start_w = w // 2
             start_h = h // 2
             self.reduced_core_map = self.core_map[start_w:, start_h:]
+            self.reduced_core_map_start_index = start_w
         else:
             raise Exception(f"Unhandled symmetry: {sym}")
 

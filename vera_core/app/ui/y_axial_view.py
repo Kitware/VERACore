@@ -66,6 +66,10 @@ def initialize(server, vera_out_file):
                 ]
                 line.append(np.ravel(assembly).tolist())
 
+    # Convert these to 1-based indexing
+    start_x = vera_out_file.core.reduced_core_map_start_index + 1
+    stop_x = len(vera_out_file.core.core_map) + 1
+
     with DivLayout(server, template_name="y_axial_view") as layout:
         layout.root.style = "height: 100%;"
         vera.AxialView(
@@ -74,9 +78,9 @@ def initialize(server, vera_out_file):
             color_range=("color_range", [0, 3]),
             x_sizes=("y_axial_core_size_x", []),
             y_sizes=("y_axial_core_size_y", []),
-            x_labels=("y_axial_core_label_x", list(range(8, 15))),  # FIXME
+            x_labels=("y_axial_core_label_x", list(range(start_x, stop_x))),
             y_labels=("y_axial_core_label_y", []),
-            selected_i=("selected_assembly_ij.i",),
+            selected_i=("selected_assembly_ij.j",),
             selected_j=("y_axial_core_label_y.length - selected_layer - 1",),
             click=(
                 axial_cell_selected,
