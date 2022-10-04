@@ -19,7 +19,7 @@ from vtkmodules.vtkRenderingVolumeOpenGL2 import vtkSmartVolumeMapper
 import vtk.util.numpy_support as np_s
 
 from trame.ui.html import DivLayout
-from trame.widgets import vtk
+from trame.widgets import vtk, vuetify
 
 OPTION = {
     "name": "volume_view",
@@ -189,3 +189,12 @@ def initialize(server, vera_out_file):
         html_view = vtk.VtkRemoteView(ren_win, ref="volume_view")
         ctrl.reset_camera = html_view.reset_camera
         ctrl.view_update = html_view.update
+
+        with vuetify.VBtn(
+            icon=True,
+            click=html_view.reset_camera,
+            absolute=True,
+            style="top: 0; right: 0",
+            small=True,
+        ):
+            vuetify.VIcon("mdi-crop-free", small=True)
