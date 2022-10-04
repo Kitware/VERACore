@@ -8,6 +8,7 @@ from . import (
     axial_plot,
     core_view,
     empty,
+    table_view,
     time_plot,
     x_axial_view,
     y_axial_view,
@@ -61,8 +62,7 @@ def initialize(server, vera_out_file):
 
     @state.change("selected_assembly")
     def selected_assembly_changed(selected_assembly, **kwargs):
-        reduced_core_map = vera_out_file.core.reduced_core_map
-        j, i = map(int, np.where(reduced_core_map == selected_assembly + 1))
+        i, j = vera_out_file.core.reduced_core_map_ij(selected_assembly)
         state.selected_assembly_ij = dict(i=i, j=j)
 
     # Go ahead and make sure they are in sync
@@ -76,6 +76,7 @@ def initialize(server, vera_out_file):
     x_axial_view.initialize(server, vera_out_file)
     y_axial_view.initialize(server, vera_out_file)
     core_view.initialize(server, vera_out_file)
+    table_view.initialize(server, vera_out_file)
     time_plot.initialize(server, vera_out_file)
     volume_view.initialize(server, vera_out_file)
     empty.initialize(server)
@@ -95,7 +96,7 @@ def initialize(server, vera_out_file):
     # Y Axial view
     # view_id = available_view_ids.pop(0)
     # state.grid_layout.append(
-    #     dict(x=3, y=0, w=3, h=20, i=view_id),
+    #     dict(x=3, y=0, w=3, h=17, i=view_id),
     # )
     # state[f"grid_view_{view_id}"] = y_axial_view.OPTION
 
@@ -133,6 +134,13 @@ def initialize(server, vera_out_file):
         dict(x=3, y=0, w=3, h=17, i=view_id),
     )
     state[f"grid_view_{view_id}"] = volume_view.OPTION
+
+    # Table view
+    view_id = available_view_ids.pop(0)
+    state.grid_layout.append(
+        dict(x=0, y=17, w=6, h=10, i=view_id),
+    )
+    state[f"grid_view_{view_id}"] = table_view.OPTION
 
     @ctrl.set("grid_add_view")
     def add_view():

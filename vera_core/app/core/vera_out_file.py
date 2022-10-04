@@ -2,6 +2,7 @@ from typing import Union
 
 import h5py
 import numpy as np
+import string
 
 H5_ARRAY_TYPE = Union[h5py.Dataset, np.ndarray]
 
@@ -126,6 +127,10 @@ class VeraOutCore(LazyHDF5Loader):
         else:
             raise Exception(f"Unhandled symmetry: {sym}")
 
+        num_cols = self.reduced_core_map.shape[1]
+        alphabet = [*string.ascii_uppercase]
+        self.reduced_core_map_column_labels = list(reversed(alphabet[:num_cols]))
+
     def compute_axial_mesh_pixels(self):
         """Compute the number of pixels that we will be displaying in
         the axial direction for each length in the axial mesh.
@@ -175,6 +180,25 @@ class VeraOutCore(LazyHDF5Loader):
     def reduced_core_map_assembly(self, i, j):
         # Get the index of the assembly at reduced core map position i, j
         return int(self.reduced_core_map[j, i] - 1)
+
+    def reduced_core_map_ij(self, assembly_idx):
+        j, i = map(int, np.where(self.reduced_core_map == assembly_idx + 1))
+        return i, j
+
+    def reduced_core_map_label(self, assembly_idx):
+        row_label = self.reduced_core_map_row_label(assembly_idx)
+        col_label = self.reduced_core_map_column_label(assembly_idx)
+        return f"{col_label}-{row_label}"
+
+    def reduced_core_map_row_label(self, assembly_idx):
+        i, j = self.reduced_core_map_ij(assembly_idx)
+        start_index = self.reduced_core_map_start_index
+        rows = list(range(start_index + 1, len(self.core_map) + 1))
+        return str(rows[j])
+
+    def reduced_core_map_column_label(self, assembly_idx):
+        i, j = self.reduced_core_map_ij(assembly_idx)
+        return self.reduced_core_map_column_labels[i]
 
 
 class VeraOutState(LazyHDF5Loader):
