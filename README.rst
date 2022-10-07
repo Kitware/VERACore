@@ -17,7 +17,7 @@ To use it locally within a virtual environment, you can run the following comman
     pip install -U pip
     pip install vera-core
 
-    vera-core
+    vera-core --data <path-to-vera-out-file>
 
 
 Development
