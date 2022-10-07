@@ -1,7 +1,7 @@
 VERACore
 ========================================
 
-VERACore is a Python application for visualization and engineering analyses of output data from VERA (Virtual Environment for Reactor Applications). 
+VERACore is a Python application for visualization and engineering analyses of output data from VERA (Virtual Environment for Reactor Applications).
 Implemented in Python, it provides instantaneous 2D and 3D images, 1D plots, and alphanumeric data from VERA multi-physics simulations.
 
 Installing
@@ -57,4 +57,4 @@ Run the application to test out your changes
 Licensing
 ----------------------------------------
 
-VERACore is provided as an open source solution and follow the free software __Apache Software License__
+VERACore is provided as an open source solution and follows the `Apache Software License <https://github.com/Kitware/VERACore/blob/master/LICENSE>`_
