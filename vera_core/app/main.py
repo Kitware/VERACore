@@ -1,9 +1,13 @@
 from functools import partial
+import os
 
 from trame.app import get_server, dev
 
 from . import ui
 from .core.vera_out_file import VeraOutFile
+
+# The user can set this via an environment variable
+DATA_PATH_ENV_NAME = "VERA_CORE_DATA_PATH"
 
 
 def _reload(vera_out_file):
@@ -21,12 +25,20 @@ def main(server=None, **kwargs):
     if isinstance(server, str):
         server = get_server(server)
 
-    server.cli.add_argument(
-        "--data",
-        help="Data file to load",
-        dest="data_file",
-        required=True,
-    )
+    data_kwargs = {
+        "help": "Data file to load",
+        "dest": "data_file",
+    }
+
+    default = os.getenv(DATA_PATH_ENV_NAME)
+    if default is not None:
+        # If the environment variable has been provided, use that for the default
+        data_kwargs["default"] = default
+    else:
+        # Otherwise, the CLI argument is required
+        data_kwargs["required"] = True
+
+    server.cli.add_argument("--data", **data_kwargs)
     args, _ = server.cli.parse_known_args()
     data_file = args.data_file
 
