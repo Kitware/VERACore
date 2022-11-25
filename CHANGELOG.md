@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.1 (2022-11-25)
+### Fix
+* **data:** Allow data to be specified by env variable ([`15da0b4`](https://github.com/Kitware/VERACore/commit/15da0b41068e2907c8e56bef7c68b93fd4c66eb5))
+
 ## v1.1.0 (2022-10-07)
 ### Feature
 * **table view:** Add new table view ([`2f13063`](https://github.com/Kitware/VERACore/commit/2f13063d2fdbd91d8cff18c686b0ba5e55e35d6e))
