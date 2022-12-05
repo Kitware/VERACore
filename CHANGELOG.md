@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.0 (2022-12-05)
+### Feature
+* **deploy:** Add initial docker deployment ([`f7695d0`](https://github.com/Kitware/VERACore/commit/f7695d06fe7b1fa16abbc9640773fdf2f6480533))
+
 ## v1.1.1 (2022-11-25)
 ### Fix
 * **data:** Allow data to be specified by env variable ([`15da0b4`](https://github.com/Kitware/VERACore/commit/15da0b41068e2907c8e56bef7c68b93fd4c66eb5))
