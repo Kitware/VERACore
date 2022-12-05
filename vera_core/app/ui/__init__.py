@@ -32,6 +32,8 @@ def initialize(server, vera_out_file):
     state, ctrl = server.state, server.controller
     state.trame__title = "VERACore"
 
+    state.setdefault("grid_item_dirty_key", 0)
+
     # FIXME: For our example, fix this to match VeraView.
     # Come up with a way to autogenerate it.
     state.color_range = (0.0273, 1.95)
@@ -212,7 +214,10 @@ def initialize(server, vera_out_file):
                         style="touch-action: none;",
                         drag_ignore_from=".drag_ignore",
                     ):
-                        with vuetify.VCard(style="height: 100%;"):
+                        with vuetify.VCard(
+                            style="height: 100%;",
+                            key="grid_item_dirty_key",
+                        ):
                             with vuetify.VCardTitle(classes="py-1 px-1"):
                                 with vuetify.VMenu(offset_y=True):
                                     with vuetify.Template(
@@ -235,7 +240,10 @@ def initialize(server, vera_out_file):
                                         with vuetify.VListItem(
                                             v_for="(option, index) in grid_options",
                                             key="index",
-                                            click="set(`grid_view_${item.i}`, option)",
+                                            click="""
+                                                set(`grid_view_${item.i}`, option);
+                                                grid_item_dirty_key++;
+                                            """,
                                         ):
                                             with vuetify.VListItemIcon():
                                                 vuetify.VIcon(v_text="option.icon")
