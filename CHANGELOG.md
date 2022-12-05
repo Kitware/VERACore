@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.1 (2022-12-05)
+### Fix
+* **options:** Update grid item when option changes ([`d8e989b`](https://github.com/Kitware/VERACore/commit/d8e989b198051ccc25916ff99e7a6d037ffbcd5f))
+
 ## v1.2.0 (2022-12-05)
 ### Feature
 * **deploy:** Add initial docker deployment ([`f7695d0`](https://github.com/Kitware/VERACore/commit/f7695d06fe7b1fa16abbc9640773fdf2f6480533))
