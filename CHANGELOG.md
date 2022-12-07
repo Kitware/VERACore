@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.2 (2022-12-07)
+### Fix
+* **jupyter:** Remove engine ([`3976de3`](https://github.com/Kitware/VERACore/commit/3976de3d7cc437666cd59e1609ca3e5934c75ceb))
+
 ## v1.2.1 (2022-12-05)
 ### Fix
 * **options:** Update grid item when option changes ([`d8e989b`](https://github.com/Kitware/VERACore/commit/d8e989b198051ccc25916ff99e7a6d037ffbcd5f))
