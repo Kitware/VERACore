@@ -18,7 +18,7 @@ trame==2.2.1
 trame-client==2.3.1
 trame-components==2.0.4
 trame-deckgl==2.0.1
-trame-grid-layout==1.0.0
+trame-grid-layout==1.0.1
 trame-markdown==2.0.2
 trame-matplotlib==2.0.1
 trame-plotly==2.1.0
