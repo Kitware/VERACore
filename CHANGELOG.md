@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.3 (2022-12-08)
+### Fix
+* **style:** Run black ([`6b8cb29`](https://github.com/Kitware/VERACore/commit/6b8cb29ab17f19633efcb09ee9d3e215cd4de02d))
+* **html:** Remove root scrollbar ([`2c590c0`](https://github.com/Kitware/VERACore/commit/2c590c0f5415913fbabdb1b6c1a454efa519bd9e))
+* **layout:** Remove selection and add margin ([`73c3687`](https://github.com/Kitware/VERACore/commit/73c3687c4b400203eb4e3e0e69b26c12a2845278))
+* **volume_view:** Remove bottom scrollbar ([`4af09f3`](https://github.com/Kitware/VERACore/commit/4af09f35c722e1496484c6b00a17977c22ff8f59))
+
 ## v1.2.2 (2022-12-07)
 ### Fix
 * **jupyter:** Remove engine ([`3976de3`](https://github.com/Kitware/VERACore/commit/3976de3d7cc437666cd59e1609ca3e5934c75ceb))
