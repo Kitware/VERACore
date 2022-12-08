@@ -1,3 +1,5 @@
+import './style.css';
+
 import VeraAssemblyView from './AssemblyView';
 import VeraAxialView from './AxialView';
 import VeraCoreView from './CoreView';
