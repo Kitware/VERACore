@@ -202,10 +202,10 @@ def initialize(server, vera_out_file):
         with layout.content:
             layout.content.style = "overflow: auto; margin: 36px 0px 35px; padding: 0;"
             with vuetify.VContainer(
-                    fluid=True,
-                    classes="pa-0 fill-height",
-                    style="user-select: none;",
-                ):
+                fluid=True,
+                classes="pa-0 fill-height",
+                style="user-select: none;",
+            ):
                 with grid.GridLayout(
                     layout=("grid_layout", []),
                     row_height=30,
