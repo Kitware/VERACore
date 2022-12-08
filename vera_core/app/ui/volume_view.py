@@ -194,7 +194,7 @@ def initialize(server, vera_out_file):
             icon=True,
             click=html_view.reset_camera,
             absolute=True,
-            style="top: 0; right: 0",
+            style="top: 0; right: 2px",
             small=True,
         ):
             vuetify.VIcon("mdi-crop-free", small=True)
