@@ -15,7 +15,7 @@ plotly==5.11.0
 PyYAML==6.0
 tenacity==8.1.0
 trame==2.2.1
-trame-client==2.3.3
+trame-client==2.3.4
 trame-components==2.0.4
 trame-deckgl==2.0.1
 trame-grid-layout==1.0.1
