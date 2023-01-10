@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.4 (2023-01-10)
+### Fix
+* **busy:** Add a busy indicator ([`8c528ae`](https://github.com/Kitware/VERACore/commit/8c528aeb3e9d37659121b9cf4a446cfad20a6ac1))
+
 ## v1.2.3 (2022-12-08)
 ### Fix
 * **style:** Run black ([`6b8cb29`](https://github.com/Kitware/VERACore/commit/6b8cb29ab17f19633efcb09ee9d3e215cd4de02d))
