@@ -177,6 +177,20 @@ def initialize(server, vera_out_file):
 
             vuetify.VSpacer()
 
+            with html.Div(
+                style="width: 25px",
+                classes="mr-2",
+            ):
+                vuetify.VProgressCircular(
+                    indeterminate=("trame__busy",),
+                    v_show=("trame__busy",),
+                    background_opacity=1,
+                    bg_color="#01549b",
+                    color="#04a94d",
+                    size=16,
+                    width=3,
+                )
+
             vuetify.VSelect(
                 v_model=("selected_array", "pin_powers"),
                 items=(
