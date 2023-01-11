@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.5 (2023-01-11)
+### Fix
+* **mouse:** Show progress cursor on most widgets ([`eed6859`](https://github.com/Kitware/VERACore/commit/eed6859b80c937881d69ceb2ffca575dd6731822))
+
 ## v1.2.4 (2023-01-10)
 ### Fix
 * **busy:** Add a busy indicator ([`8c528ae`](https://github.com/Kitware/VERACore/commit/8c528aeb3e9d37659121b9cf4a446cfad20a6ac1))
