@@ -1,7 +1,7 @@
 import numpy as np
 
 from trame.ui.vuetify import SinglePageLayout
-from trame.widgets import vuetify, grid, client, html
+from trame.widgets import client, grid, html, vuetify
 from vera_core.widgets import vera
 from . import (
     assembly_view,
@@ -162,9 +162,12 @@ def initialize(server, vera_out_file):
 
     # Setup main layout
     with SinglePageLayout(server) as layout:
+        layout.root.classes = ("{ busy: trame__busy }",)
+
         # Toolbar
         with layout.toolbar as toolbar:
             toolbar.clear()
+
             toolbar.height = 36
 
             html.Img(src=assets.LOGO, height=25)
@@ -182,8 +185,9 @@ def initialize(server, vera_out_file):
                 classes="mr-2",
             ):
                 vuetify.VProgressCircular(
-                    indeterminate=("trame__busy",),
+                    indeterminate=True,
                     v_show=("trame__busy",),
+                    style="background-color: lightgray; border-radius: 50%",
                     background_opacity=1,
                     bg_color="#01549b",
                     color="#04a94d",
@@ -294,6 +298,7 @@ def initialize(server, vera_out_file):
         # Footer
         with layout.footer as footer:
             footer.clear()
+
             footer.height = 35
             with vuetify.VBtn(
                 icon=True,

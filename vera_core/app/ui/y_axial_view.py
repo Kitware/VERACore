@@ -88,4 +88,5 @@ def initialize(server, vera_out_file):
             ),
             x_scale=("3",),
             y_scale=("3",),
+            busy=("trame__busy",),
         )

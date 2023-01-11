@@ -43,6 +43,10 @@ export default {
       type: Number,
       default: 2,
     },
+    busy: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     selectedI(i) {
@@ -125,7 +129,7 @@ export default {
       this.activeJ = this.selectedJ;
     },
     toStyle(i, j) {
-      const style = { cursor: 'pointer' };
+      const style = {};
       if (i == this.activeI && j == this.activeJ) {
         Object.assign(style, this.activeStyle);
       }

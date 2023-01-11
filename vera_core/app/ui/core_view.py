@@ -57,4 +57,5 @@ def initialize(server, vera_out_file):
             color_preset="jet",
             color_range=("color_range", [0, 3]),
             click="selected_assembly_ij = $event",
+            busy=("trame__busy",),
         )

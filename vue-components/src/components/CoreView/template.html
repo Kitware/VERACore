@@ -44,6 +44,7 @@
           width="30"
           outlined
           :style="toStyle(i, j)"
+          :class="{ busy, pointerCursor: !busy }"
           @click="$emit('click', { i, j })"
           @mouseenter="hover(i, j)"
           @mouseleave="exit"

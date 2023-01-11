@@ -70,4 +70,5 @@ def initialize(server, vera_out_file):
             color_preset="jet",
             color_range=("color_range", [0, 3]),
             click="setAll({ selected_i: $event.i, selected_j: $event.j})",
+            busy=("trame__busy",),
         )

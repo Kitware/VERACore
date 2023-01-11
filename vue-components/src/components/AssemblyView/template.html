@@ -44,6 +44,7 @@
           width="30"
           outlined
           class="ml-1 mt-1 d-flex flex-column justify-center"
+          :class="{ busy, pointerCursor: !busy }"
           :style="toStyle(i, j)"
           :color="colors[toIdx(i, j)]"
           @click="$emit('click', { i: i - 1, j: j - 1 })"

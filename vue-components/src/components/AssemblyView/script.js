@@ -30,6 +30,10 @@ export default {
         outline: 'solid 3px black',
       }),
     },
+    busy: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     selectedI(i) {
@@ -111,7 +115,7 @@ export default {
       return v.toFixed(2);
     },
     toStyle(i, j) {
-      const style = { cursor: 'pointer' };
+      const style = {};
       if (i == this.activeI && j == this.activeJ) {
         Object.assign(style, this.activeStyle);
       }

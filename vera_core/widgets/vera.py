@@ -22,6 +22,7 @@ class AssemblyView(HtmlElement):
             ("color_preset", "colorPreset"),
             ("color_range", "colorRange"),
             ("active_style", ":activeStyle"),
+            "busy",
         ]
         self._event_names += [
             "click",
@@ -44,6 +45,7 @@ class CoreView(HtmlElement):
             ("x_labels", "xLabels"),
             ("y_labels", "yLabels"),
             "scaling",
+            "busy",
         ]
         self._event_names += [
             "click",
@@ -69,6 +71,7 @@ class AxialView(HtmlElement):
             ("y_scale", "yScale"),
             ("x_sizes", "xSizes"),
             ("y_sizes", "ySizes"),
+            "busy",
         ]
         self._event_names += [
             "click",
@@ -84,6 +87,7 @@ class ColorMapEditor(HtmlElement):
         self._attr_names += [
             "value",
             ("color_preset", "colorPreset"),
+            "busy",
         ]
         self._event_names += [
             "input",

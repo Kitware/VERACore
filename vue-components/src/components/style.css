@@ -1,3 +1,11 @@
 html {
   overflow: hidden !important;
 }
+
+.pointerCursor {
+  cursor: pointer;
+}
+
+.busy {
+  cursor: wait !important;
+}

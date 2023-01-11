@@ -1,4 +1,7 @@
-<div class="d-flex align-center">
+<div
+  class="d-flex align-center"
+  :class="{ busy, pointerCursor: !busy }"
+>
   <v-text-field
     v-model="minValue"
     @change="validateRange"
