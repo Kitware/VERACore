@@ -39,7 +39,7 @@ def initialize(server, vera_out_file):
 
         data_dict = {
             selected_array: value,
-            "crit_boron": vera_out_file.active_state.crit_boron[0],
+            "boron": vera_out_file.active_state.boron[0],
             "exposure": vera_out_file.active_state.exposure[0],
             "keff": vera_out_file.active_state.keff[0],
         }

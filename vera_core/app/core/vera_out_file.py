@@ -80,14 +80,21 @@ class LazyHDF5Loader:
         if name not in self._dataset_names:
             raise AttributeError(name)
 
-        setattr(self, name, self._load_dataset(name)[:])
+        dataset = self._load_dataset(name)[()]
+        if not isinstance(dataset, np.ndarray):
+            dataset = np.array([dataset])
+        setattr(self, name, dataset)
 
     def _uncache(self, name):
         # Set the attribute to be the h5py dataset
         if name not in self._dataset_names:
             raise AttributeError(name)
-
-        setattr(self, name, self._load_dataset(name))
+        
+        #to fix issue with scalar datasets being indexed with a [0]
+        dataset = self._load_dataset(name)[()]
+        if not isinstance(dataset, np.ndarray):
+            dataset = np.array([dataset])
+        setattr(self, name, dataset)
 
     def _cache_all(self):
         for name in self._dataset_names:
@@ -203,14 +210,14 @@ class VeraOutCore(LazyHDF5Loader):
 
 class VeraOutState(LazyHDF5Loader):
     # These are the attributes that will be read from the HDF5 file
-    crit_boron: H5_ARRAY_TYPE = None
+    boron: H5_ARRAY_TYPE = None
     detector_response: H5_ARRAY_TYPE = None
     exposure: H5_ARRAY_TYPE = None
     keff: H5_ARRAY_TYPE = None
-    pin_cladtemps: H5_ARRAY_TYPE = None
-    pin_fueltemps: H5_ARRAY_TYPE = None
-    pin_moddens: H5_ARRAY_TYPE = None
-    pin_modtemps: H5_ARRAY_TYPE = None
+    pin_max_clad_surface_temp: H5_ARRAY_TYPE = None
+    pin_fuel_temp: H5_ARRAY_TYPE = None
+    pin_mod_dens: H5_ARRAY_TYPE = None
+    pin_mod_temp: H5_ARRAY_TYPE = None
     pin_powers: H5_ARRAY_TYPE = None
 
     def __init__(self, f, idx):
