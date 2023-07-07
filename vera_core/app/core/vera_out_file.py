@@ -89,8 +89,8 @@ class LazyHDF5Loader:
         # Set the attribute to be the h5py dataset
         if name not in self._dataset_names:
             raise AttributeError(name)
-        
-        #to fix issue with scalar datasets being indexed with a [0]
+
+        # to fix issue with scalar datasets being indexed with a [0]
         dataset = self._load_dataset(name)[()]
         if not isinstance(dataset, np.ndarray):
             dataset = np.array([dataset])
