@@ -1,0 +1,18 @@
+trame:
+  www_modules:
+    - vera_core.module
+  cmd:
+    - /opt/paraview/bin/pvpython
+    - -m
+    - paraview.apps.trame
+    - --trame-app
+    - vera_core.app
+    - --data
+    - /data/p9.h5
+    - --host
+    - ${host}
+    - --port
+    - ${port}
+    - --authKey
+    - ${secret}
+    - --server
