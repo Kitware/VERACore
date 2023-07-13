@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.6 (2023-07-13)
+
+### Fix
+
+* Trigger release for new format ([`424c729`](https://github.com/Kitware/VERACore/commit/424c729f50f39723d3465ec96fb6674044fbe73d))
+
 ## v1.2.5 (2023-01-11)
 ### Fix
 * **mouse:** Show progress cursor on most widgets ([`eed6859`](https://github.com/Kitware/VERACore/commit/eed6859b80c937881d69ceb2ffca575dd6731822))
