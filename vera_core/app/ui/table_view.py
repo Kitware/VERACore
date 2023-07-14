@@ -37,11 +37,15 @@ def initialize(server, vera_out_file):
         array = vera_out_file.array(selected_array)
         value = array[indices]
 
-        data_dict = {
-            selected_array: value
-        }
+        data_dict = {selected_array.replace("_", " ").title(): value}
         for scalar_dataset in vera_out_file.active_state.scalar_datasets.keys():
-            data_dict.update({scalar_dataset.replace('_',' ').title(): vera_out_file.array(scalar_dataset)[0]})
+            data_dict.update(
+                {
+                    scalar_dataset.replace("_", " ").title(): vera_out_file.array(
+                        scalar_dataset
+                    )[0]
+                }
+            )
 
         # Round floats so we don't display too many sig figs.
         # 7 sig figs matches veraview.

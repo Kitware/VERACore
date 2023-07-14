@@ -17,7 +17,6 @@ def _reload(vera_out_file):
 
 
 def main(server=None, **kwargs):
-
     # Get or create server
     if server is None:
         server = get_server()

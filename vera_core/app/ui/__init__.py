@@ -201,8 +201,10 @@ def initialize(server, vera_out_file):
                 v_model=("selected_array", "pin_powers"),
                 items=(
                     "available_arrays",
-                    [dict(text=key.replace('_', ' ').title(), value=key) for key in \
-                     vera_out_file.active_state.full_core_datasets.keys()],
+                    [
+                        dict(text=key.replace("_", " ").title(), value=key)
+                        for key in vera_out_file.active_state.full_core_datasets.keys()
+                    ],
                 ),
                 hide_details=True,
                 dense=True,

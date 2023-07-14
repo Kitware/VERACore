@@ -227,7 +227,7 @@ class VeraOutState(LazyHDF5Loader):
         pin_powers = state["pin_powers"]
         core_shape = np.shape(pin_powers)
         for dataset_name in state.keys():
-            dataset_shape =  np.shape(state[dataset_name])
+            dataset_shape = np.shape(state[dataset_name])
             if dataset_shape == core_shape:
                 self.full_core_datasets.update({dataset_name: "H5_ARRAY_TYPE = NONE"})
             if dataset_shape in [(1,), ()]:
