@@ -50,6 +50,8 @@ def initialize(server, vera_out_file):
         ctrl.on_vera_out_active_state_index_changed(
             selected_time=selected_time, **kwargs
         )
+        # Automatically normalize color scale to current state
+        selected_array_changed(state.selected_array)
 
     @state.change("selected_array")
     def selected_array_changed(selected_array, **kwargs):
@@ -199,14 +201,8 @@ def initialize(server, vera_out_file):
                 v_model=("selected_array", "pin_powers"),
                 items=(
                     "available_arrays",
-                    [
-                        dict(text="Pin Powers", value="pin_powers"),
-                        dict(text="Pin Clad Temps", value="pin_max_clad_surface_temp"),
-                        dict(text="Pin Fuel Temps", value="pin_fuel_temp"),
-                        dict(text="Pin Moderator Density", value="pin_mod_dens"),
-                        dict(text="Pin Moderator Temps", value="pin_mod_temp"),
-                        dict(text="Pin Volumes", value="pin_volumes"),
-                    ],
+                    [dict(text=key.replace('_', ' ').title(), value=key) for key in \
+                     vera_out_file.active_state.full_core_datasets.keys()],
                 ),
                 hide_details=True,
                 dense=True,
