@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.0 (2023-07-17)
+
+### Feature
+
+* **vera-auto-datasets:** Added automatic dataset searching for full-core and scalar datasets, and updated color normalization to be state-wise ([`161cf31`](https://github.com/Kitware/VERACore/commit/161cf317d29e2ec9a881152511d17cd288384bf3))
+
+### Fix
+
+* **opacity:** Changed the volume rendering ([`69381fe`](https://github.com/Kitware/VERACore/commit/69381fec621c2167bb4d3834fa130fb86a98487e))
+* **vera-auto-datasets:** Fixed formatting ([`24f8324`](https://github.com/Kitware/VERACore/commit/24f83241f0b1c494691445705ee7206698e7c1a9))
+
 ## v1.2.6 (2023-07-13)
 
 ### Fix
