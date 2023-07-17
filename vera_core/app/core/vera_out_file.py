@@ -209,17 +209,26 @@ class VeraOutCore(LazyHDF5Loader):
 
 
 class VeraOutState(LazyHDF5Loader):
-    # These are the attributes that will be read from the HDF5 file
-    boron: H5_ARRAY_TYPE = None
-    detector_response: H5_ARRAY_TYPE = None
-    exposure: H5_ARRAY_TYPE = None
-    keff: H5_ARRAY_TYPE = None
-    pin_max_clad_surface_temp: H5_ARRAY_TYPE = None
-    pin_fuel_temp: H5_ARRAY_TYPE = None
-    pin_mod_dens: H5_ARRAY_TYPE = None
-    pin_mod_temp: H5_ARRAY_TYPE = None
-    pin_powers: H5_ARRAY_TYPE = None
-
     def __init__(self, f, idx):
+        # These are the attributes that will be read from the HDF5 file
+        self.__annotations__ = dict()
+
+        self.full_core_datasets = dict()
+        self.scalar_datasets = dict()
+        self.search_for_datasets(f, idx)
+        self.__annotations__.update(self.full_core_datasets)
+        self.__annotations__.update(self.scalar_datasets)
         super().__init__(f, f"/STATE_{idx:04}", list(self.__annotations__))
         self._index = idx
+
+    def search_for_datasets(self, f, idx):
+        # Search for available full core/scalar datasets at each state point
+        state = f[f"/STATE_{idx:04}"]
+        pin_powers = state["pin_powers"]
+        core_shape = np.shape(pin_powers)
+        for dataset_name in state.keys():
+            dataset_shape = np.shape(state[dataset_name])
+            if dataset_shape == core_shape:
+                self.full_core_datasets.update({dataset_name: "H5_ARRAY_TYPE = NONE"})
+            if dataset_shape in [(1,), ()]:
+                self.scalar_datasets.update({dataset_name: "H5_ARRAY_TYPE = NONE"})

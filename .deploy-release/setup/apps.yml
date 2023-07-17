@@ -8,7 +8,7 @@ trame:
     - --trame-app
     - vera_core.app
     - --data
-    - /data/p9.h5
+    - /data/p9_20230428_master.h5
     - --host
     - ${host}
     - --port

@@ -59,9 +59,12 @@ def initialize(server, vera_out_file):
     # FIXME: for now, let's make it fully opaque so it matches veraview
     # exactly.
     opacity_points = [
-        (0.00, 0),
-        (0.01, 1),
-        (1.95, 1),
+        (-10.0, 1),
+        (-0.00000000000000000001, 1),
+        (-0.000000000000000000005, 0.0),
+        (0.000000000000000000005, 0.0),
+        (0.00000000000000000001, 1),
+        (10.0, 1),
     ]
 
     # Create transfer mapping scalar value to opacity.
