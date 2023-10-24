@@ -19,10 +19,10 @@ def _reload(vera_out_file):
 def main(server=None, **kwargs):
     # Get or create server
     if server is None:
-        server = get_server()
+        server = get_server(client_type="vue2")
 
     if isinstance(server, str):
-        server = get_server(server)
+        server = get_server(server, client_type="vue2")
 
     data_kwargs = {
         "help": "Data file to load",
