@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.1 (2023-10-24)
+
+### Fix
+
+* **trame:** Update to trame v3 ([`3802a3e`](https://github.com/Kitware/VERACore/commit/3802a3e875b95559a980b1f9bfb57c083047ad40))
+
 ## v1.3.0 (2023-07-17)
 
 ### Feature
