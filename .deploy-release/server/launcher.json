@@ -1,0 +1,44 @@
+{
+    "configuration": {
+      "host": "0.0.0.0",
+      "port": 9000,
+      "endpoint": "paraview",
+      "log_dir": "/deploy/server/logs/launcher",
+      "proxy_file": "/opt/trame/proxy-mapping.txt",
+      "sessionURL": "ws://USE_HOST/proxy?sessionId=${id}&path=ws",
+      "timeout": 60,
+      "sanitize": {},
+      "fields": []
+    },
+    "resources": [
+      {
+        "host": "0.0.0.0",
+        "port_range": [
+          9001,
+          9500
+        ]
+      }
+    ],
+    "properties": {},
+    "apps": {
+      "trame": {
+        "cmd": [
+          "/opt/paraview/bin/pvpython",
+          "-m",
+          "paraview.apps.trame",
+          "--trame-app",
+          "vera_core.app",
+          "--data",
+          "/data/p9_20230428_master.h5",
+          "--host",
+          "${host}",
+          "--port",
+          "${port}",
+          "--authKey",
+          "${secret}",
+          "--server"
+        ],
+        "ready_line": "App running at"
+      }
+    }
+  }
