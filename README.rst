@@ -6,6 +6,9 @@ Implemented in Python, it provides instantaneous 2D and 3D images, 1D plots, and
 
 For an interactive online example, see `here <https://vera.trame.kitware.com/>`_.
 
+.. image:: https://raw.githubusercontent.com/Kitware/VERACore/refs/heads/master/veracore.png
+  :alt: VeraCore UI
+
 Installing
 ----------------------------------------
 
